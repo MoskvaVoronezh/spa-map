@@ -1,20 +1,39 @@
 <template>
   <div class="page">
-    home
+    <Sidebar class="page__sidebar"/>
+    <main class="page__map">
+      <Map />
+    </main>
+    <Listing class="page__listing"/>
   </div>
 </template>
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
+  import Sidebar from "@/components/menus/Sidebar.vue";
+  import Listing from "@/components/menus/Listing.vue";
+  import Map from "@/components/Map.vue";
+  
 
-  @Component({})
-  export default class HomePage extends Vue {
-    created() {
-      console.log('created');
+  @Component({
+    components: {
+      Sidebar,
+      Listing,
+      Map,
     }
+  })
+  export default class HomePage extends Vue {
   }
 </script>
 
 <style lang="scss">
-  
+  .page {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+
+    &__map {
+      flex: 1;
+    }
+  }
 </style>
