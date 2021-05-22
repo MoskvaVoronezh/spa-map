@@ -1,21 +1,23 @@
 <template>
-  <div id="map">
-      map
-  </div>
+  <div id="map"></div>
 </template>
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
-
+	declare var ymaps: any;
   @Component({})
   export default class Map extends Vue {
-     created() {
-        console.log('created')
-     }
-     mounted() {
-        console.log('mounted');
-        
-     }
+		
+		mounted() {
+			this.initMap();
+		}
+		
+		initMap() {
+			const map = new ymaps.Map("map", {
+				center: [55.76, 37.64],
+				zoom: 10
+			});
+		}
   }
 </script>
 
