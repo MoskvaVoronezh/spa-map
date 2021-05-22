@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-if="isInit">
-    <router-view />
+    <router-view :key="$router.currentRoute.fullPath" />
   </div>
 </template>
 
