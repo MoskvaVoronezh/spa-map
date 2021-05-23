@@ -22,6 +22,10 @@
 					center: [55.76, 37.64],
 					zoom: 10
 				});
+
+				ymaps.geolocation.get({provider: 'browser'}).then(result => {
+					this.map.setCenter(result.geoObjects.position, 10);
+				});
 			})
 
 		}
