@@ -26,11 +26,12 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .page {
     position: relative;
     display: flex;
     align-items: stretch;
+    overflow-x: hidden;
 
     &__map {
       flex: 1;
