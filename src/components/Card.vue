@@ -1,5 +1,5 @@
 <template>
-   <div class="card">
+   <div class="card" @click="opened" :class="{ 'card--open': isOpenCard }">
       <template v-if="type === 'mark'">
          <h2 class="card__title">Название карточки</h2>
          <div class="card__content">
@@ -20,7 +20,7 @@
                <input id="lat" type="text" class="card__input" placeholder="Введите широту">
             </div>
             <div class="card__group card__cancel">
-               <el-button class="button" type="info">Отмена</el-button>
+               <el-button class="button" type="info" @click="cancelMark">Отмена</el-button>
             </div>
             <div class="card__group card__save">
                <el-button class="button" type="primary">Сохранить</el-button>
@@ -40,7 +40,7 @@
             </div>
             <div class="card__group card__radius">
                <label for="radius" class="card__label">Радиус</label>
-               <input id="radius" type="text" class="card__input" placeholder="Введите адрес">
+               <input id="radius" type="text" class="card__input" placeholder="Введите радиус">
             </div>
             <div class="card__group card__long">
                <label for="long" class="card__label">Долгота</label>
@@ -67,6 +67,19 @@
   @Component({})
   export default class Card extends Vue {
      @Prop() type;
+     isOpenCard: boolean = false;
+     nameMark: string = '';
+     description: string = '';
+     longMark: string = '';
+     latMark: string = '';
+
+     opened() {
+        this.isOpenCard = !this.isOpenCard;
+     }
+
+     cancelMark() {
+
+     }
   }
 </script>
 
@@ -90,6 +103,7 @@
         "desc desc"
         "long lat"
         "cancel save";
+        display: none;
         @supports (column-gap: 10px) and (row-gap: 10px) {
          grid-template-columns: repeat(2, 1fr);
          row-gap: 10px;
@@ -199,10 +213,6 @@
 
      &__save {
         grid-area: save;
-     }
-
-     &--opened {
-        
      }
   }
 </style>

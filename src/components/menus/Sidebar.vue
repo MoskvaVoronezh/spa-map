@@ -29,8 +29,20 @@
      }
   })
   export default class Sidebar extends Vue {
-     activeTab = 'marks';
-     labelPosition: 'top';
+    // activeTab = 'marks';
+		labelPosition: 'top';
+
+		created() {
+			//func getList() {}
+		}
+
+		get activeTab() {
+			return this.$store.state.activeTab;
+		}
+
+		generateID() {
+			return '_' + Math.random().toString(36).substr(2, 9);
+		}
   }
 </script>
 

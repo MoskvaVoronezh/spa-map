@@ -45,6 +45,7 @@
     transition: right, width 0.3s;
     display: flex;
     flex-direction: column;
+    border: 1px solid #DCDFE6;
 
     &--open {
       width: 33vw;
