@@ -8,7 +8,13 @@
                </div>
             </div>
          </el-tab-pane>
-         <el-tab-pane label="Окружности" name="circles">Окружность</el-tab-pane>
+         <el-tab-pane label="Окружности" name="circles">
+            <div class="sidebar__content">
+               <div class="sidebar__list">
+                  <Card :type="'circle'"/>
+               </div>
+            </div>
+         </el-tab-pane>
       </el-tabs>
       <el-button type="primary">Добавить</el-button>
   </aside>

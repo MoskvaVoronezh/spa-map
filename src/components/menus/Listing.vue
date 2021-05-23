@@ -4,7 +4,7 @@
       <button class="listing__switch" @click="switchMenu">
         <svg class="listing__switch-icon" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/></svg>
       </button>
-      <el-tabs v-model="activeTab" class="listing__tabs">
+      <el-tabs v-model="activeListingTab" class="listing__tabs">
          <el-tab-pane label="Метки" name="marks" class="listing__button">
             <div class="listing__content">
                <div class="listing__list">
@@ -24,7 +24,7 @@
   @Component({})
   export default class Listing extends Vue {
     menuOpen: boolean = false;
-    activeTab: 'marks';
+    activeListingTab = 'marks';
 
     switchMenu() {
       this.menuOpen = !this.menuOpen;
