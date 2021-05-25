@@ -3,10 +3,7 @@
 </template>
 
 <script lang="ts">
-	import {
-		Component,
-		Vue
-	} from "vue-property-decorator";
+	import { Component, Vue } from "vue-property-decorator";
 	declare var ymaps: any;
 	@Component({})
 	export default class Map extends Vue {
