@@ -35,6 +35,10 @@ class Resource {
          ]
       }
    }
+
+   addMark(mark): any {
+      // post request for add mark
+   }
 }
 
 export const sidebarResource = new Resource();

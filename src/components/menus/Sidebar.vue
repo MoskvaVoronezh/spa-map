@@ -5,12 +5,12 @@
             <div class="sidebar__content">
                <div class="sidebar__list">
                  <template v-if="marks.length === 0">
-                   <div class="card" @clicl="addMark">
+                   <div class="card" @click="addMark">
                      <h2 class="card__title">Карточка с меткой</h2>
                    </div>
                  </template>
                  <template v-else>
-                   <Card v-for="(mark, index) of marks" :mark="mark" :index="index" :key="mark.id"  class="sidebar__list-item"/>
+                   <Card v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id"  class="sidebar__list-item"/>
                  </template>
                </div>
             </div>
@@ -20,7 +20,7 @@
                <div class="sidebar__list">
                   <template v-if="circles.length === 0">
                     <div class="card">
-                        <h2 class="card__title">Карточка с окружностью</h2>
+                        <h2 class="card__title">Карточка с окружностью в шаблоне</h2>
                     </div>
                   </template>
                   <template v-else>
@@ -30,8 +30,8 @@
             </div>
          </el-tab-pane>
       </el-tabs>
-      <el-button v-if="activeTab === 'marks'" type="primary" @click="addCard()">Добавить метку</el-button>
-      <el-button v-if="activeTab === 'circles'" type="primary" @click="addCard()">Добавить окружность</el-button>
+      <el-button v-if="activeTab === 'marks'" type="primary" :disabled="marks.length === 0" @click="addCard()">Добавить метку</el-button>
+      <el-button v-if="activeTab === 'circles'" type="primary" :disabled="circles.length === 0" @click="addCard()">Добавить окружность</el-button>
   </aside>
 </template>
 
@@ -50,12 +50,24 @@
   })
   export default class Sidebar extends Vue {
 
-		marks: IMark[] = [];
-		circles: ICircle[] = [];
+		// marks: IMark[] = [];
+		// circles: ICircle[] = [];
 
 		created() {
-
+      if (this.marks && this.circles) {
+        this.$store.dispatch('cards/getLists');
+      }
 		}
+
+		get marks(): IMark[] {
+      console.log(this.$store.state.cards.marks);
+      return this.$store.state.cards.marks;
+    }
+
+    get circles(): ICircle[] {
+      console.log(this.$store.state.cards.circles);
+		  return this.$store.state.cards.circles;
+    }
 
      get activeTab() {
        return this.$store.state.cards.activeTab;
@@ -66,8 +78,9 @@
     }
 
     addCard() {
-
     }
+
+    addMark() {}
 
 		generateID() {
 			return '_' + Math.random().toString(36).substr(2, 9);

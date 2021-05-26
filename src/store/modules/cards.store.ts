@@ -18,16 +18,27 @@ export default {
    },
    actions: {
       async getLists({state, commit}:any) {
+         console.log('getLists');
          try {
             const response = await sidebarResource.getLists();
 
-            commit('cards/setPropertyInState', { name: 'marks', value: response.marks });
-            commit('cards/setPropertyInState', { name: 'circles', value: response.circles });
+            commit('setPropertyInState', { name: 'marks', value: response.marks });
+            commit('setPropertyInState', { name: 'circles', value: response.circles });
 
             return response;
          }
          catch(e) {
             console.error(e);
+         }
+      },
+
+      async addCardMark({state, commit}) {
+         console.log('markAddMark');
+         try {
+            const response = await sidebarResource.addMark(state.marks);
+         }
+         catch (e) {
+            console.log(e);
          }
       }
    },

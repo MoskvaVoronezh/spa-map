@@ -1,23 +1,23 @@
 <template>
    <div class="card" @click="opened" :class="{ 'card--open': isOpenCard }">
-      <template v-if="this.markForm.type === 'mark'">
+      <template v-if="data.type === 'mark'">
          <h2 class="card__title">Название карточки</h2>
          <div class="card__content" @click.prevent>
             <div class="card__group card__name">
                <label :for="`name-marks-${index}`" class="card__label">Название</label>
-               <input :id="`name-marks-${index}`" v-model="markForm.name" type="text" class="card__input" placeholder="Введите название метки">
+               <input :id="`name-marks-${index}`"type="text" class="card__input" placeholder="Введите название метки">
             </div>
             <div class="card__group card__desc">
                <label :for="`desc-${index}`" class="card__label">Описание</label>
-               <textarea class="card__textarea" v-model="markForm.description" name="desc" :id="`desc-${index}`" cols="30" rows="10" placeholder="Введите описание"></textarea>
+               <textarea class="card__textarea" name="desc" :id="`desc-${index}`" cols="30" rows="10" placeholder="Введите описание"></textarea>
             </div>
             <div class="card__group card__long">
                <label :for="`long-${index}`" class="card__label">Долгота</label>
-               <input :id="`long-${index}`" type="text" v-model="markForm.long" class="card__input" placeholder="Введите долготу">
+               <input :id="`long-${index}`" type="text" class="card__input" placeholder="Введите долготу">
             </div>
             <div class="card__group card__lat">
                <label :for="`lat-${index}`" class="card__label">Широта</label>
-               <input :id="`lat-${index}`" type="text" v-model="markForm.lat" class="card__input" placeholder="Введите широту">
+               <input :id="`lat-${index}`" type="text"class="card__input" placeholder="Введите широту">
             </div>
             <div class="card__group card__cancel">
                <el-button class="button" type="info" @click="cancelMark">Отмена</el-button>
@@ -27,7 +27,7 @@
             </div>
          </div>
       </template>
-      <template v-if="type === 'circle'">
+      <template v-if="data.type === 'circle'">
          <h2 class="card__title">Название карточки</h2>
          <div class="card__content card__content--circle">
             <div class="card__group card__name">
@@ -48,7 +48,7 @@
             </div>
             <div class="card__group card__lat">
                <label :for="`circle-lat-${index}`" class="card__label">Широта</label>
-               <input :id="`circle-lat$-{index}`" type="text" class="card__input" placeholder="Введите широту">
+               <input :id="`circle-lat$-${index}`" type="text" class="card__input" placeholder="Введите широту">
             </div>
             <div class="card__group card__cancel">
                <el-button class="button" type="info">Отмена</el-button>
@@ -64,29 +64,15 @@
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
   import {MapObjects} from "@/interfaces/map-objects.interface";
+  import IMark = MapObjects.IMark;
 
   @Component({})
   export default class Card extends Vue {
-     @Prop() mark: any;
+     @Prop() data: any;
      @Prop() index: any;
      isOpenCard: boolean = false;
-     markForm = {
-       name: '',
-       description: '',
-       lat: '',
-       long: '',
-       type: '',
-
-     }
 
      created() {
-       this.markForm = {
-         name: this.mark.name,
-         description: this.mark.description,
-         lat: this.mark.lat,
-         long: this.mark.long,
-         type: this.mark.type,
-       }
      }
 
      opened() {
