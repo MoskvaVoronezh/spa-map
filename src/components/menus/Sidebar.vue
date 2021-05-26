@@ -1,12 +1,12 @@
 <template>
   <aside class="sidebar">
-      <el-tabs v-model="activeTab" class="sidebar__tabs" @tab-click="changeTab">
+      <el-tabs v-model="activeTab" class="sidebar__tabs">
          <el-tab-pane label="Метки" name="marks" class="sidebar__button">
             <div class="sidebar__content">
                <div class="sidebar__list">
                  <template v-if="marks.length === 0">
-                   <div class="card">
-                     <h2 class="card__title">Название карточки</h2>
+                   <div class="card" @clicl="addMark">
+                     <h2 class="card__title">Карточка с меткой</h2>
                    </div>
                  </template>
                  <template v-else>
@@ -20,7 +20,7 @@
                <div class="sidebar__list">
                   <template v-if="circles.length === 0">
                     <div class="card">
-                        <h2 class="card__title">Название карточки</h2>
+                        <h2 class="card__title">Карточка с окружностью</h2>
                     </div>
                   </template>
                   <template v-else>
@@ -30,39 +30,42 @@
             </div>
          </el-tab-pane>
       </el-tabs>
-      <el-button type="primary" @click="addCard()">Добавить</el-button>
+      <el-button v-if="activeTab === 'marks'" type="primary" @click="addCard()">Добавить метку</el-button>
+      <el-button v-if="activeTab === 'circles'" type="primary" @click="addCard()">Добавить окружность</el-button>
   </aside>
 </template>
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
   import Card from "@/components/Card.vue";
-  import {sidebarLeft} from '@/resources/sidebar-resource';
   import {MapObjects} from "@/interfaces/map-objects.interface";
   import IMark = MapObjects.IMark;
   import ICircle = MapObjects.ICircle;
   @Component({
      components: {
         Card
+     },
+     computed: {
      }
   })
   export default class Sidebar extends Vue {
-    // activeTab = 'marks';
-		labelPosition: 'top';
+
 		marks: IMark[] = [];
 		circles: ICircle[] = [];
 
 		created() {
-      const response = sidebarLeft.getLists();
-      this.marks = response.marks;
-      this.circles = response.circles;
+
 		}
 
-    addCard() {
-
+     get activeTab() {
+       return this.$store.state.cards.activeTab;
     }
 
-    changeTab(tab, event) {
+    set activeTab(tab) {
+      this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: tab});
+    }
+
+    addCard() {
 
     }
 
