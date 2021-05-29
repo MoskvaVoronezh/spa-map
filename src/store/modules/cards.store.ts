@@ -2,6 +2,8 @@ import { Vue } from 'vue-property-decorator';
 import { MapObjects } from '@/interfaces/map-objects.interface';
 import IState = MapObjects.IState;
 import {sidebarResource} from '@/resources/sidebar-resource';
+import IMark = MapObjects.IMark;
+import ICircle = MapObjects.ICircle;
 
 export default {
    namespaced: true,
@@ -15,11 +17,11 @@ export default {
       setPropertyInState(state: IState, { name, value }: { name: string, value: any }) {
          Vue.set(state, name, value);
       },
-      addCardMark(state: IState, value) {
-         return state.marks.push(value);
+      addCardMark(state: IState, mark: IMark) {
+         return state.marks.push(mark);
       },
-      addCardCircle(state: IState, value) {
-         return state.circles.push(value);
+      addCardCircle(state: IState, circle: ICircle) {
+         return state.circles.push(circle);
       }
    },
    actions: {
@@ -40,7 +42,6 @@ export default {
       async addCardMark({ commit }) {
          try {
             const response = await sidebarResource.addCardMark();
-            commit('setPropertyInState', { name: 'activeElem', value: response.id })
             commit('addCardMark', response);
          }
          catch (e) {
@@ -51,7 +52,6 @@ export default {
       async addCardCircle({ commit }) {
          try {
             const response = await sidebarResource.addCardCircle();
-            commit('setPropertyInState', { name: 'activeElem', value: response.id })
             commit('addCardCircle', response);
          }
          catch (e) {

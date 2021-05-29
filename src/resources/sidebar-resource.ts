@@ -7,32 +7,33 @@ class Resource {
       const url = 'url';
       return {
          circles: [],
-         marks: [
-            {
-               name: 'Метка 1',
-               description: 'Описание метки 1',
-               id: 1,
-               lat: 55.044159,
-               long: 82.998953,
-               type: 'mark',
-            },
-            {
-               name: 'Метка 2',
-               description: 'Описание метки 2',
-               id: 2,
-               lat: 55.024159,
-               long: 82.198953,
-               type: 'mark',
-            },
-            {
-               name: 'Метка 3',
-               description: 'Описание метки 3',
-               id: 3,
-               lat: 55.041159,
-               long: 81.1353,
-               type: 'mark',
-            }
-         ]
+         marks: [],
+         // marks: [
+         //    {
+         //       name: 'Метка 1',
+         //       description: 'Описание метки 1',
+         //       id: 1,
+         //       lat: 55.044159,
+         //       long: 82.998953,
+         //       type: 'mark',
+         //    },
+         //    {
+         //       name: 'Метка 2',
+         //       description: 'Описание метки 2',
+         //       id: 2,
+         //       lat: 55.024159,
+         //       long: 82.198953,
+         //       type: 'mark',
+         //    },
+         //    {
+         //       name: 'Метка 3',
+         //       description: 'Описание метки 3',
+         //       id: 3,
+         //       lat: 55.041159,
+         //       long: 81.1353,
+         //       type: 'mark',
+         //    }
+         // ]
       }
    }
 
@@ -56,7 +57,7 @@ class Resource {
    }
 
    addCardCircle(): any {
-      // post request for add mark
+      // post request for add circle
       const id = this.generateID();
       return {
          name: '',

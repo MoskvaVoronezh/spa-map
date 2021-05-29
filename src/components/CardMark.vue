@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id }">
-      <h2 class="card__title" v-if="!(isOpened === data.id)">{{ data.name ? data.name : 'Название метки' }}</h2>
+      <h2 class="card__title" v-if="!(isOpened === data.id)">{{ data.name ? data.name : 'Здесь будет название вашей метки' }}</h2>
       <div class="card__content" @click.prevent>
         <div class="card__group card__name">
           <label :for="`name-marks-${index}`" class="card__label">Название</label>
@@ -37,7 +37,6 @@ import IMark = MapObjects.IMark;
 export default class CardMark extends Vue {
   @Prop() data: any;
   @Prop() index: any;
-  isOpenCard: boolean = false;
   markName: string = "";
   markDescription: string = "";
   markLong: string = "";
@@ -53,7 +52,7 @@ export default class CardMark extends Vue {
     this.markLat = this.data.lat;
   }
 
-  get isOpened() {
+  get isOpened(): boolean {
     return this.$store.state.cards.activeElem;
   }
 
@@ -90,23 +89,6 @@ export default class CardMark extends Vue {
         "long lat"
         "cancel save";
     display: none;
-    @supports (column-gap: 10px) and (row-gap: 10px) {
-      grid-template-columns: repeat(2, 1fr);
-      row-gap: 10px;
-      column-gap: 10px;
-    }
-  }
-
-  &__content--circle {
-    padding: 10px;
-    display: grid;
-    -ms-grid-columns: 1fr 1fr;
-    grid-template-areas:
-        "name name"
-        "address address"
-        "radius radius"
-        "long lat"
-        "cancel save";
     @supports (column-gap: 10px) and (row-gap: 10px) {
       grid-template-columns: repeat(2, 1fr);
       row-gap: 10px;

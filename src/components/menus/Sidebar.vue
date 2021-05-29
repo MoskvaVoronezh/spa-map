@@ -6,7 +6,7 @@
                <div class="sidebar__list">
                  <template v-if="marks.length === 0">
                    <div class="card" @click="addMark">
-                     <h2 class="card__title">Карточка с меткой</h2>
+                     <h2 class="card__title">Нажмите чтобы создать метку</h2>
                    </div>
                  </template>
                  <template v-else>
@@ -20,7 +20,7 @@
                <div class="sidebar__list">
                   <template v-if="circles.length === 0">
                     <div class="card">
-                        <h2 class="card__title" @click="addCircle">Карточка с окружностью в шаблоне</h2>
+                        <h2 class="card__title" @click="addCircle">Нажмите чтобы создать окружность</h2>
                     </div>
                   </template>
                   <template v-else>
@@ -114,9 +114,6 @@
 
     &__list-item {
       margin-bottom: 20px;
-      &.card--open {
-        //order: -1;
-      }
     }
   }
 

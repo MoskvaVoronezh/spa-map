@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id }">
-    <h2 class="card__title" v-if="!(isOpened === data.id)">{{ data.name ? data.name : 'Название окружности' }}</h2>
+    <h2 class="card__title" v-if="!(isOpened === data.id)">{{ data.name ? data.name : 'Здесь будет название вашей окружности' }}</h2>
     <div class="card__content card__content--circle">
       <div class="card__group card__name">
         <label :for="`name-circle-${index}`" class="card__label">Название</label>
@@ -41,7 +41,6 @@ import IMark = MapObjects.IMark;
 export default class CardCircle extends Vue {
   @Prop() data: any;
   @Prop() index: any;
-  isOpenCard: boolean = false;
 
   created() {
   }
@@ -50,7 +49,8 @@ export default class CardCircle extends Vue {
 
   }
 
-  get isOpened() {
+  get isOpened(): boolean {
+    console.log(this.$store.state.cards.activeElem);
     return this.$store.state.cards.activeElem;
   }
 
@@ -74,23 +74,6 @@ export default class CardCircle extends Vue {
     margin: 0;
   }
 
-  &__content {
-    padding: 10px;
-    display: grid;
-    -ms-grid-columns: 1fr 1fr;
-    grid-template-areas:
-        "name name"
-        "desc desc"
-        "long lat"
-        "cancel save";
-    display: none;
-    @supports (column-gap: 10px) and (row-gap: 10px) {
-      grid-template-columns: repeat(2, 1fr);
-      row-gap: 10px;
-      column-gap: 10px;
-    }
-  }
-
   &__content--circle {
     padding: 10px;
     display: grid;
@@ -101,6 +84,7 @@ export default class CardCircle extends Vue {
         "radius radius"
         "long lat"
         "cancel save";
+    display: none;
     @supports (column-gap: 10px) and (row-gap: 10px) {
       grid-template-columns: repeat(2, 1fr);
       row-gap: 10px;
