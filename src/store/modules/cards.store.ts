@@ -40,6 +40,7 @@ export default {
       async addCardMark({ commit }) {
          try {
             const response = await sidebarResource.addCardMark();
+            commit('setPropertyInState', { name: 'activeElem', value: response.id })
             commit('addCardMark', response);
          }
          catch (e) {
@@ -50,6 +51,7 @@ export default {
       async addCardCircle({ commit }) {
          try {
             const response = await sidebarResource.addCardCircle();
+            commit('setPropertyInState', { name: 'activeElem', value: response.id })
             commit('addCardCircle', response);
          }
          catch (e) {

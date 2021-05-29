@@ -10,7 +10,7 @@
                    </div>
                  </template>
                  <template v-else>
-                   <Card v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" class="sidebar__list-item"/>
+                   <CardMark v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" ref="mark.id" class="sidebar__list-item" />
                  </template>
                </div>
             </div>
@@ -24,7 +24,7 @@
                     </div>
                   </template>
                   <template v-else>
-                    <Card v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" class="sidebar__list-item"/>
+                    <CardCircle v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" class="sidebar__list-item"/>
                   </template>
                </div>
             </div>
@@ -37,14 +37,16 @@
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
-  import Card from "@/components/Card.vue";
+  import CardMark from "@/components/CardMark.vue";
+  import CardCircle from "@/components/CardCircle.vue";
   import {MapObjects} from "@/interfaces/map-objects.interface";
   import IMark = MapObjects.IMark;
   import ICircle = MapObjects.ICircle;
 
   @Component({
      components: {
-        Card
+       CardMark,
+       CardCircle
      },
      computed: {
      }
@@ -113,7 +115,7 @@
     &__list-item {
       margin-bottom: 20px;
       &.card--open {
-        order: -1;
+        //order: -1;
       }
     }
   }
