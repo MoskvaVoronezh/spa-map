@@ -1,23 +1,23 @@
 <template>
-   <div class="card" @click="opened" :class="{ 'card--open': isOpenCard }">
+   <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id }">
       <template v-if="data.type === 'mark'">
-         <h2 class="card__title">Название карточки</h2>
+         <h2 class="card__title">{{ data.name ? data.name : 'Название метки' }}</h2>
          <div class="card__content" @click.prevent>
             <div class="card__group card__name">
                <label :for="`name-marks-${index}`" class="card__label">Название</label>
-               <input :id="`name-marks-${index}`"type="text" class="card__input" placeholder="Введите название метки">
+               <input :id="`name-marks-${index}`" v-model="markName" type="text" class="card__input" placeholder="Введите название метки">
             </div>
             <div class="card__group card__desc">
                <label :for="`desc-${index}`" class="card__label">Описание</label>
-               <textarea class="card__textarea" name="desc" :id="`desc-${index}`" cols="30" rows="10" placeholder="Введите описание"></textarea>
+               <textarea class="card__textarea" v-model="markDescription" name="desc" :id="`desc-${index}`" cols="30" rows="10" placeholder="Введите описание"></textarea>
             </div>
             <div class="card__group card__long">
-               <label :for="`long-${index}`" class="card__label">Долгота</label>
-               <input :id="`long-${index}`" type="text" class="card__input" placeholder="Введите долготу">
+               <label :for="`long-${index}`"  class="card__label">Долгота</label>
+               <input :id="`long-${index}`" v-model="markLong" type="text" class="card__input" placeholder="Введите долготу">
             </div>
             <div class="card__group card__lat">
                <label :for="`lat-${index}`" class="card__label">Широта</label>
-               <input :id="`lat-${index}`" type="text"class="card__input" placeholder="Введите широту">
+               <input :id="`lat-${index}`" v-model="markLat" type="text" class="card__input" placeholder="Введите широту">
             </div>
             <div class="card__group card__cancel">
                <el-button class="button" type="info" @click="cancelMark">Отмена</el-button>
@@ -71,16 +71,34 @@
      @Prop() data: any;
      @Prop() index: any;
      isOpenCard: boolean = false;
+     markName: string = "";
+     markDescription: string = "";
+     markLong: string = "";
+     markLat: string = "";
 
      created() {
      }
 
-     opened() {
-        this.isOpenCard = !this.isOpenCard;
+     mounted() {
+       this.markName = this.data.name;
+       this.markDescription = this.data.description;
+       this.markLong = this.data.long;
+       this.markLat = this.data.lat;
+     }
+
+     get isOpened() {
+       return this.$store.state.cards.activeElem;
+     }
+
+     open() {
+       this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: this.data.id});
      }
 
      cancelMark() {
-
+       this.markName = "";
+       this.markDescription = "";
+       this.markLong = "";
+       this.markLat = "";
      }
   }
 </script>
@@ -216,6 +234,11 @@
      &__save {
         grid-area: save;
      }
+
+    &.card--open {
+      background-color: rgba(#409EFF, 0.4);
+      border: 1px solid #b3d8ff;
+    }
 
     &--open & {
       &__content {

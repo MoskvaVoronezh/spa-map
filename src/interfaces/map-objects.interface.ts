@@ -13,7 +13,7 @@ export namespace MapObjects {
       type: string;
       lat: string;
       long: string;
-      state: string;
+      state: string; //open, closed, closed-error
    }
 
    export interface ICircle {
@@ -25,7 +25,7 @@ export namespace MapObjects {
       type: string;
       lat: string;
       long: string;
-      state: string;
+      state: string;  //open, closed, closed-error
    }
 }
 

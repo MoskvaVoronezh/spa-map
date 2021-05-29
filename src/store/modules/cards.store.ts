@@ -14,11 +14,16 @@ export default {
    mutations: {
       setPropertyInState(state: IState, { name, value }: { name: string, value: any }) {
          Vue.set(state, name, value);
+      },
+      addCardMark(state: IState, value) {
+         return state.marks.push(value);
+      },
+      addCardCircle(state: IState, value) {
+         return state.circles.push(value);
       }
    },
    actions: {
-      async getLists({state, commit}:any) {
-         console.log('getLists');
+      async getLists({ commit }:any) {
          try {
             const response = await sidebarResource.getLists();
 
@@ -32,10 +37,20 @@ export default {
          }
       },
 
-      async addCardMark({state, commit}) {
-         console.log('markAddMark');
+      async addCardMark({ commit }) {
          try {
-            const response = await sidebarResource.addMark(state.marks);
+            const response = await sidebarResource.addCardMark();
+            commit('addCardMark', response);
+         }
+         catch (e) {
+            console.log(e);
+         }
+      },
+
+      async addCardCircle({ commit }) {
+         try {
+            const response = await sidebarResource.addCardCircle();
+            commit('addCardCircle', response);
          }
          catch (e) {
             console.log(e);

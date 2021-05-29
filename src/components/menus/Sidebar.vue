@@ -10,7 +10,7 @@
                    </div>
                  </template>
                  <template v-else>
-                   <Card v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id"  class="sidebar__list-item"/>
+                   <Card v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" class="sidebar__list-item"/>
                  </template>
                </div>
             </div>
@@ -20,18 +20,18 @@
                <div class="sidebar__list">
                   <template v-if="circles.length === 0">
                     <div class="card">
-                        <h2 class="card__title">Карточка с окружностью в шаблоне</h2>
+                        <h2 class="card__title" @click="addCircle">Карточка с окружностью в шаблоне</h2>
                     </div>
                   </template>
                   <template v-else>
-                    <Card v-for="circle of circles"/>
+                    <Card v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" class="sidebar__list-item"/>
                   </template>
                </div>
             </div>
          </el-tab-pane>
       </el-tabs>
-      <el-button v-if="activeTab === 'marks'" type="primary" :disabled="marks.length === 0" @click="addCard()">Добавить метку</el-button>
-      <el-button v-if="activeTab === 'circles'" type="primary" :disabled="circles.length === 0" @click="addCard()">Добавить окружность</el-button>
+      <el-button v-if="activeTab === 'marks'" type="primary" :disabled="marks.length === 0" @click="addMark">Добавить метку</el-button>
+      <el-button v-if="activeTab === 'circles'" type="primary" :disabled="circles.length === 0" @click="addCircle">Добавить окружность</el-button>
   </aside>
 </template>
 
@@ -41,6 +41,7 @@
   import {MapObjects} from "@/interfaces/map-objects.interface";
   import IMark = MapObjects.IMark;
   import ICircle = MapObjects.ICircle;
+
   @Component({
      components: {
         Card
@@ -50,9 +51,6 @@
   })
   export default class Sidebar extends Vue {
 
-		// marks: IMark[] = [];
-		// circles: ICircle[] = [];
-
 		created() {
       if (this.marks && this.circles) {
         this.$store.dispatch('cards/getLists');
@@ -60,12 +58,10 @@
 		}
 
 		get marks(): IMark[] {
-      console.log(this.$store.state.cards.marks);
       return this.$store.state.cards.marks;
     }
 
     get circles(): ICircle[] {
-      console.log(this.$store.state.cards.circles);
 		  return this.$store.state.cards.circles;
     }
 
@@ -77,36 +73,47 @@
       this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: tab});
     }
 
-    addCard() {
+    addMark() {
+      this.$store.dispatch('cards/addCardMark');
     }
 
-    addMark() {}
+    addCircle() {
+      this.$store.dispatch('cards/addCardCircle');
+    }
 
-		generateID() {
-			return '_' + Math.random().toString(36).substr(2, 9);
-		}
   }
 </script>
 
 <style lang="scss">
   .sidebar {
-     --vh: 1vh;
-     height: calc(var(--vh)* 100);
-     min-height: -webkit-fill-available;
-     min-width: 350px;
-     width: 25vw;
-     padding: 0 10px 10px 10px;
-     display: flex;
-     flex-direction: column; 
-     &__tabs {
-        flex-grow: 1;
-     }
+    --vh: 1vh;
+    height: calc(var(--vh)* 100);
+    min-height: -webkit-fill-available;
+    min-width: 350px;
+    width: 25vw;
+    padding: 0 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    &__tabs {
+      flex-grow: 1;
+      .el-tabs__header {
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 10;
+      }
+    }
+
+    &__list {
+      display: flex;
+      flex-direction: column;
+    }
 
     &__list-item {
-      margin-top: 20px;
-
-      &:first-child {
-        margin-top: 0;
+      margin-bottom: 20px;
+      &.card--open {
+        order: -1;
       }
     }
   }

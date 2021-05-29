@@ -36,8 +36,39 @@ class Resource {
       }
    }
 
-   addMark(mark): any {
+   generateID() {
+      return '_' + Math.random().toString(36).substr(2, 9);
+   }
+
+   addCardMark(): any {
       // post request for add mark
+      const id = this.generateID();
+      return {
+         name: '',
+         description: '',
+         id,
+         lat: '',
+         long: '',
+         type: 'mark',
+         isOpened: false,
+         state: 'closed'
+      }
+   }
+
+   addCardCircle(): any {
+      // post request for add mark
+      const id = this.generateID();
+      return {
+         name: '',
+         address: '',
+         id,
+         isOpened: false,
+         radius: null,
+         type: 'circle',
+         lat: '',
+         long: '',
+         state: 'closed'  //open, closed, closed-error
+      }
    }
 }
 
