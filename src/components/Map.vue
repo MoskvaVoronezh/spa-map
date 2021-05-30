@@ -12,6 +12,7 @@
 	@Component({})
 	export default class Map extends Vue {
 		map: any;
+		placemarks: any;
 
     get marks(): IMark[] {
       return this.$store.state.cards.marks;
@@ -38,7 +39,14 @@
               // Чтобы балун и хинт открывались на метке, необходимо задать ей определенные свойства.
               balloonContentHeader: mark.name,
               balloonContentBody: `<p>${mark.description}</p>`,
-              hintContent: "Хинт метки"
+              hintContent: mark.name
+            });
+
+            objectOnMap.events.add('click', (e) => {
+              if (mark.type === 'mark') {
+                this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks' });
+                this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: mark.id });
+              }
             });
 
             this.map.geoObjects.add(objectOnMap);
