@@ -10,7 +10,7 @@
                    </div>
                  </template>
                  <template v-else>
-                   <CardMark v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" ref="mark.id" class="sidebar__list-item" />
+                   <CardMark v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" ref="markCard" class="sidebar__list-item" />
                  </template>
                </div>
             </div>
@@ -24,7 +24,7 @@
                     </div>
                   </template>
                   <template v-else>
-                    <CardCircle v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" class="sidebar__list-item"/>
+                    <CardCircle v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" ref="circleCard" class="sidebar__list-item"/>
                   </template>
                </div>
             </div>
@@ -76,6 +76,7 @@
     }
 
     addMark() {
+      console.log(this.$refs.markCard);
       this.$store.dispatch('cards/addCardMark');
     }
 
