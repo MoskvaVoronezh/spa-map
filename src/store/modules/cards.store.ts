@@ -57,6 +57,16 @@ export default {
          catch (e) {
             console.log(e);
          }
+      },
+
+      async clearMark({commit}) {
+         // try {
+         //    const response = await sidebarResource.clearMark(mark);
+         //    console.log(response);
+         // }
+         // catch (e) {
+         //    console.log(e);
+         // }
       }
    },
 };

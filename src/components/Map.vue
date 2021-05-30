@@ -7,12 +7,13 @@
   import {MapObjects} from "@/interfaces/map-objects.interface";
   import IMark = MapObjects.IMark;
   import ICircle = MapObjects.ICircle;
+  import {bus} from "@/plugins/bus";
 	declare var ymaps: any;
 
 	@Component({})
 	export default class Map extends Vue {
 		map: any;
-		placemarks: any;
+		placemarks: any = [];
 
     get marks(): IMark[] {
       return this.$store.state.cards.marks;
@@ -33,35 +34,45 @@
 					zoom: 10
 				});
 
-				this.marks.forEach(mark => {
-				  if(mark.lat && mark.long) {
-            let objectOnMap = new ymaps.Placemark([mark.lat, mark.long], {
-              // Чтобы балун и хинт открывались на метке, необходимо задать ей определенные свойства.
+        ymaps.geolocation.get({provider: 'browser'}).then(result => {
+          this.map.setCenter(result.geoObjects.position, 10);
+        });
+
+        var objectManager = new ymaps.ObjectManager({ clusterize: false });
+        let marksBalloon = [];
+        this.marks.forEach(mark => {
+          marksBalloon.push({
+            type: 'Feature',
+            id: mark.id,
+            geometry: {
+              type: 'Point',
+              coordinates: [mark.lat, mark.long]
+            },
+            properties: {
               balloonContentHeader: mark.name,
-              balloonContentBody: `<p>${mark.description}</p>`,
-              hintContent: mark.name
-            });
+              hintContent: mark.name,
+              balloonContentBody: `<p>${mark.description}</p>`
+            }
+          });
+        });
 
-            objectOnMap.events.add('click', (e) => {
-              if (mark.type === 'mark') {
-                this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks' });
-                this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: mark.id });
-              }
-            });
+        objectManager.add(marksBalloon);
+        this.map.geoObjects.add(objectManager);
 
-            this.map.geoObjects.add(objectOnMap);
-          }
+        bus.$on('openMark', (e) => {
+          console.log(e);
+          objectManager.objects.balloon.open(e.id);
+        });
+
+        objectManager.objects.events.add('click', (e) => {
+          this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks' });
+          this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
         })
-
-				ymaps.geolocation.get({provider: 'browser'}).then(result => {
-					this.map.setCenter(result.geoObjects.position, 10);
-				});
 			})
-
 		}
 
 		destroyed() {
-			this.map.destroyed();
+
 		}
 	}
 </script>

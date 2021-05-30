@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id }">
+  <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id, 'card--with-error': data.state === 'error' }">
       <h2 class="card__title" v-if="!(isOpened === data.id)">{{ data.name ? data.name : 'Здесь будет название вашей метки' }}</h2>
       <div class="card__content" @click.prevent>
         <div class="card__group card__name">
@@ -22,7 +22,7 @@
           <el-button class="button" type="info" @click="cancelMark">Отмена</el-button>
         </div>
         <div class="card__group card__save">
-          <el-button class="button" type="primary">Сохранить</el-button>
+          <el-button class="button" type="primary" @click="saveMark">Сохранить</el-button>
         </div>
       </div>
   </div>
@@ -32,6 +32,7 @@
 import {Component, Prop, Vue} from "vue-property-decorator";
 import {MapObjects} from "@/interfaces/map-objects.interface";
 import IMark = MapObjects.IMark;
+import {bus} from "@/plugins/bus";
 
 @Component({})
 export default class CardMark extends Vue {
@@ -57,7 +58,14 @@ export default class CardMark extends Vue {
   }
 
   open() {
+    bus.$emit('openMark',{ id: this.data.id, lat: this.data.lat, long: this.data.long, name: this.data.name, description: this.data.description });
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: this.data.id});
+  }
+
+  saveMark() {
+    if (this.markName && this.markLong && this.markLat) {
+      console.log('все круто сохраняем');
+    }
   }
 
   cancelMark() {
@@ -65,6 +73,11 @@ export default class CardMark extends Vue {
     this.markDescription = "";
     this.markLong = "";
     this.markLat = "";
+    let marks = this.$store.state.cards.marks.map(mark => {
+      if (mark.id === this.data.id) {
+        console.log(mark);
+      }
+    })
   }
 }
 </script>
