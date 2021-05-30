@@ -60,8 +60,8 @@
         this.map.geoObjects.add(objectManager);
 
         bus.$on('openMark', (e) => {
-          console.log(e);
           objectManager.objects.balloon.open(e.id);
+          this.map.setCenter([e.lat, e.long], 10);
         });
 
         objectManager.objects.events.add('click', (e) => {
@@ -69,10 +69,6 @@
           this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
         })
 			})
-		}
-
-		destroyed() {
-
 		}
 	}
 </script>
