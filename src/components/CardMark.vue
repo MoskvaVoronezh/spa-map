@@ -75,9 +75,11 @@ export default class CardMark extends Vue {
     this.markDescription = "";
     this.markLong = "";
     this.markLat = "";
-    let marks = this.$store.state.cards.marks.map(mark => {
+
+    this.$store.state.cards.marks.forEach(mark => {
       if (mark.id === this.data.id) {
-        console.log(mark);
+        bus.$emit('deleteMark', {id: this.data.id});
+        this.$store.dispatch('cards/clearMark', {id: this.data.id});
       }
     })
   }

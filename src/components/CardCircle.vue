@@ -4,26 +4,26 @@
     <div class="card__content card__content--circle">
       <div class="card__group card__name">
         <label :for="`name-circle-${index}`" class="card__label">Название</label>
-        <input :id="`name-circle-${index}`" type="text" class="card__input" placeholder="Введите название окружности">
+        <input :id="`name-circle-${index}`" v-model="name" type="text" class="card__input" placeholder="Введите название окружности">
       </div>
       <div class="card__group card__address">
         <label :for="`address-${index}`" class="card__label">Адрес</label>
-        <input :id="`address-${index}`" type="text" class="card__input" placeholder="Введите адрес">
+        <input :id="`address-${index}`" v-model="address" type="text" class="card__input" placeholder="Введите адрес">
       </div>
       <div class="card__group card__radius">
         <label :for="`radius-${index}`" class="card__label">Радиус</label>
-        <input :id="`radius-${index}`" type="text" class="card__input" placeholder="Введите радиус">
+        <input :id="`radius-${index}`"  v-model="radius" type="text" class="card__input" placeholder="Введите радиус">
       </div>
       <div class="card__group card__long">
         <label :for="`circle-long-${index}`" class="card__label">Долгота</label>
-        <input :id="`circle-long-${index}`" type="text" class="card__input" placeholder="Введите долготу">
+        <input :id="`circle-long-${index}`" v-model="long" type="text" class="card__input" placeholder="Введите долготу">
       </div>
       <div class="card__group card__lat">
         <label :for="`circle-lat-${index}`" class="card__label">Широта</label>
-        <input :id="`circle-lat$-${index}`" type="text" class="card__input" placeholder="Введите широту">
+        <input :id="`circle-lat$-${index}`" v-model="lat" type="text" class="card__input" placeholder="Введите широту">
       </div>
       <div class="card__group card__cancel">
-        <el-button class="button" type="info">Отмена</el-button>
+        <el-button class="button" type="info" @click="clearCircle">Отмена</el-button>
       </div>
       <div class="card__group card__save">
         <el-button class="button" type="primary">Сохранить</el-button>
@@ -42,7 +42,18 @@ export default class CardCircle extends Vue {
   @Prop() data: any;
   @Prop() index: any;
 
+  name: string = "";
+  address: string = "";
+  lat: string = "";
+  long: string = ""
+  radius: number = null;
+
   created() {
+    this.name = this.data.name;
+    this.address = this.data.address;
+    this.lat = this.data.lat;
+    this.long = this.data.long;
+    this.radius = this.data.radius;
   }
 
   mounted() {
@@ -50,7 +61,6 @@ export default class CardCircle extends Vue {
   }
 
   get isOpened(): boolean {
-    console.log(this.$store.state.cards.activeElem);
     return this.$store.state.cards.activeElem;
   }
 
@@ -58,7 +68,7 @@ export default class CardCircle extends Vue {
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: this.data.id});
   }
 
-  cancelMark() {
+  clearCircle() {
 
   }
 }
