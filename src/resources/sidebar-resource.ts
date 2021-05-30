@@ -11,9 +11,10 @@ class Resource {
                name: 'Окружность 1',
                address: 'адрес',
                id: 'circle_1',
-               lat: 55.060321220898125,
-               long: 82.99208654492188,
-               type: 'circle'
+               lat: 55.044159,
+               long: 82.998953,
+               type: 'circle',
+               radius: 100,
             }
          ],
          marks: [
@@ -80,12 +81,8 @@ class Resource {
       }
    }
 
-   clearMark(mark): any {
-      mark.name = "";
-      mark.description = "";
-      mark.lat = "";
-      mark.long = "";
-      return mark;
+   clearMark(id): any {
+      //delete elem in database;
    }
 
 }
