@@ -40,6 +40,8 @@
 
         var objectManager = new ymaps.ObjectManager({ clusterize: false });
         let marksBalloon = [];
+        let cirlcesMap = [];
+
         this.marks.forEach(mark => {
           marksBalloon.push({
             type: 'Feature',
@@ -56,12 +58,31 @@
           });
         });
 
+        this.circles.forEach(circle => {
+          cirlcesMap.push({
+            type: 'Feature',
+            id: circle.id,
+            geometry: {
+              type: 'Circle',
+              coordinates: [circle.lat, circle.long],
+              radius: circle.radius,
+            }
+          });
+        });
+
+        var circle = new ymaps.Circle([[55.044159, 82.998953], 10000], null, { draggable: true });
+
         objectManager.add(marksBalloon);
         this.map.geoObjects.add(objectManager);
+        this.map.geoObjects.add(circle);
 
         bus.$on('openMark', (e) => {
           objectManager.objects.balloon.open(e.id);
           this.map.setCenter([e.lat, e.long], 10);
+        });
+
+        bus.$on('deleteMark', (e) => {
+          console.log('deleteMark');
         });
 
         objectManager.objects.events.add('click', (e) => {

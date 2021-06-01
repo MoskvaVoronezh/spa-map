@@ -81,6 +81,10 @@ class Resource {
       }
    }
 
+   saveMark(mark):any {
+      //api request for save mark
+   }
+
    clearMark(id): any {
       //delete elem in database;
    }
