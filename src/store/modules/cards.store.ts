@@ -22,6 +22,30 @@ export default {
       },
       addCardCircle(state: IState, circle: ICircle) {
          return state.circles.push(circle);
+      },
+      saveMark(state: IState, payload) {
+        return state.marks.map(mark => {
+           if (mark.id === payload.id) {
+              mark.name = payload.name;
+              mark.description = payload.description;
+              mark.lat = payload.lat;
+              mark.long = payload.long;
+              mark.id = payload.id;
+              mark.state = 'closed';
+              mark.isOpened = false;
+           }
+        })
+      },
+      clearMarkCard(state: IState, id) {
+         return state.marks.map(mark => {
+            if (mark.id === id) {
+               mark.name = "";
+               mark.description = "";
+               mark.lat = "";
+               mark.lat = "";
+               mark.state = "closed";
+            }
+         })
       }
    },
    actions: {
@@ -59,14 +83,25 @@ export default {
          }
       },
 
-      async clearMark({commit}) {
-         // try {
-         //    const response = await sidebarResource.clearMark(mark);
-         //    console.log(response);
-         // }
-         // catch (e) {
-         //    console.log(e);
-         // }
+      async clearMark({commit}, payload) {
+         try {
+            const response = await sidebarResource.clearMark(payload.id);
+            commit('clearMarkCard', payload.id);
+         }
+         catch (e) {
+            console.log(e);
+         }
+      },
+
+      async saveMark({commit}, payload) {
+         console.log(payload);
+         try {
+            const response = await sidebarResource.saveMark(payload);
+            commit('saveMark', payload);
+         }
+         catch (e) {
+            console.log(e);
+         }
       }
    },
 };
