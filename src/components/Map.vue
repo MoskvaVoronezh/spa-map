@@ -71,7 +71,9 @@
                 radius: circle.radius
               },
               properties: {
-                hintContent: circle.address
+                hintContent: circle.address,
+                balloonContentHeader: circle.name,
+                balloonContentBody: `<p>${circle.address}</p>`
               },
               options: {
                 draggable: true,
@@ -95,6 +97,11 @@
 
         bus.$on('deleteMark', (e) => {
 
+        });
+
+        bus.$on('openCircle', (e) => {
+          ObjectManagerCircles.objects.balloon.open(e.id);
+          this.map.setCenter([e.lat, e.long], 10);
         });
 
         ObjectManagerMarks.objects.events.add('click', (e) => {

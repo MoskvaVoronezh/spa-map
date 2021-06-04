@@ -36,6 +36,7 @@
 import {Component, Prop, Vue} from "vue-property-decorator";
 import {MapObjects} from "@/interfaces/map-objects.interface";
 import IMark = MapObjects.IMark;
+import {bus} from "@/plugins/bus";
 
 @Component({})
 export default class CardCircle extends Vue {
@@ -65,6 +66,11 @@ export default class CardCircle extends Vue {
   }
 
   open() {
+    console.log(this.data);
+    if (this.data.lat && this.data.long) {
+      bus.$emit('openCircle',{ id: this.data.id, lat: this.data.lat, long: this.data.long, name: this.data.name, radius: this.data.radius, address: this.data.address });
+    }
+
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: this.data.id});
   }
 
