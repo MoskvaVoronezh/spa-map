@@ -14,7 +14,7 @@ class Resource {
                lat: 55.044159,
                long: 82.998953,
                type: 'circle',
-               radius: 100,
+               radius: 10000,
             }
          ],
          marks: [

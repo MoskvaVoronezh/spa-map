@@ -38,55 +38,72 @@
           this.map.setCenter(result.geoObjects.position, 10);
         });
 
-        var objectManager = new ymaps.ObjectManager({ clusterize: false });
-        let marksBalloon = [];
-        let cirlcesMap = [];
+        let ObjectManagerCircles = new ymaps.ObjectManager();
+        let ObjectManagerMarks = new ymaps.ObjectManager();
 
-        this.marks.forEach(mark => {
-          marksBalloon.push({
-            type: 'Feature',
-            id: mark.id,
-            geometry: {
-              type: 'Point',
-              coordinates: [mark.lat, mark.long]
-            },
-            properties: {
-              balloonContentHeader: mark.name,
-              hintContent: mark.name,
-              balloonContentBody: `<p>${mark.description}</p>`
+        let marksData = {
+          type: "FeatureCollection",
+          features: this.marks.map(mark => {
+            return {
+              type: 'Feature',
+              id: mark.id,
+              geometry: {
+                type: 'Point',
+                coordinates: [mark.lat, mark.long]
+              },
+              properties: {
+                balloonContentHeader: mark.name,
+                hintContent: mark.name,
+                balloonContentBody: `<p>${mark.description}</p>`
+              }
             }
-          });
-        });
+          })
+        }
 
-        this.circles.forEach(circle => {
-          cirlcesMap.push({
-            type: 'Feature',
-            id: circle.id,
-            geometry: {
-              type: 'Circle',
-              coordinates: [circle.lat, circle.long],
-              radius: circle.radius,
+        let circlesData = {
+          type: "FeatureCollection",
+          features: this.circles.map(circle => {
+            return {
+              type: 'Feature',
+              id: circle.id,
+              geometry: {
+                type: "Circle",
+                coordinates: [circle.lat, circle.long],
+                radius: circle.radius
+              },
+              properties: {
+                hintContent: circle.address
+              },
+              options: {
+                strokeColor: '#000',
+                strokeWidth: 2,
+              }
             }
-          });
-        });
+          })
+        }
 
-        var circle = new ymaps.Circle([[55.044159, 82.998953], 10000], null, { draggable: true });
+        ObjectManagerMarks.add(marksData);
+        ObjectManagerCircles.add(circlesData);
 
-        objectManager.add(marksBalloon);
-        this.map.geoObjects.add(objectManager);
-        this.map.geoObjects.add(circle);
+        this.map.geoObjects.add(ObjectManagerMarks);
+        this.map.geoObjects.add(ObjectManagerCircles);
 
         bus.$on('openMark', (e) => {
-          objectManager.objects.balloon.open(e.id);
+          ObjectManagerMarks.objects.balloon.open(e.id);
           this.map.setCenter([e.lat, e.long], 10);
         });
 
         bus.$on('deleteMark', (e) => {
-          console.log('deleteMark');
+
         });
 
-        objectManager.objects.events.add('click', (e) => {
+        ObjectManagerMarks.objects.events.add('click', (e) => {
           this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks' });
+          this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
+        });
+
+        ObjectManagerCircles.objects.events.add('click', (e) => {
+          this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles' });
           this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
         })
 			})
