@@ -13,6 +13,8 @@
 	@Component({})
 	export default class Map extends Vue {
 		map: any;
+    circlesData: {}
+    marksData: {}
 
     get marks(): IMark[] {
       return this.$store.state.cards.marks;
@@ -40,7 +42,7 @@
         let ObjectManagerCircles = new ymaps.ObjectManager();
         let ObjectManagerMarks = new ymaps.ObjectManager();
 
-        let marksData = {
+        this.marksData = {
           type: "FeatureCollection",
           features: this.marks.map(mark => {
             return {
@@ -59,7 +61,7 @@
           })
         }
 
-        let circlesData = {
+        this.circlesData = {
           type: "FeatureCollection",
           features: this.circles.map(circle => {
             return {
@@ -84,8 +86,8 @@
           })
         }
 
-        ObjectManagerMarks.add(marksData);
-        ObjectManagerCircles.add(circlesData);
+        ObjectManagerMarks.add(this.marksData);
+        ObjectManagerCircles.add(this.circlesData);
 
         this.map.geoObjects.add(ObjectManagerMarks);
         this.map.geoObjects.add(ObjectManagerCircles);
@@ -114,11 +116,11 @@
           this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
         });
 
-        // ObjectManagerCircles.objects.events.add('beforedrag', (e) => {
-        //   console.log(e);
-        //   // this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles' });
-        //   // this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
-        // });
+        ObjectManagerCircles.objects.events.add('drag', (e) => {
+          console.log(e);
+          // this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles' });
+          // this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
+        });
 			})
 		}
 	}
