@@ -66,7 +66,6 @@ export default class CardCircle extends Vue {
   }
 
   open() {
-    console.log(this.data);
     if (this.data.lat && this.data.long) {
       bus.$emit('openCircle',{ id: this.data.id, lat: this.data.lat, long: this.data.long, name: this.data.name, radius: this.data.radius, address: this.data.address });
     }
