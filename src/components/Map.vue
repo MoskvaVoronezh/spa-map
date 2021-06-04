@@ -13,7 +13,6 @@
 	@Component({})
 	export default class Map extends Vue {
 		map: any;
-		placemarks: any = [];
 
     get marks(): IMark[] {
       return this.$store.state.cards.marks;
@@ -75,6 +74,7 @@
                 hintContent: circle.address
               },
               options: {
+                draggable: true,
                 strokeColor: '#000',
                 strokeWidth: 2,
               }
@@ -105,7 +105,13 @@
         ObjectManagerCircles.objects.events.add('click', (e) => {
           this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles' });
           this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
-        })
+        });
+
+        // ObjectManagerCircles.objects.events.add('beforedrag', (e) => {
+        //   console.log(e);
+        //   // this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles' });
+        //   // this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
+        // });
 			})
 		}
 	}
