@@ -103,7 +103,7 @@ export default class CardMark extends Vue {
     grid-template-areas:
         "name name"
         "desc desc"
-        "long lat"
+        "lat long"
         "cancel save";
     display: none;
     @supports (column-gap: 10px) and (row-gap: 10px) {
