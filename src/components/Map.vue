@@ -79,7 +79,7 @@
               },
               options: {
                 draggable: true,
-                strokeColor: '#000',
+                strokeColor: '#fff',
                 strokeWidth: 2,
               }
             }
