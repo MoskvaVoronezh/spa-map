@@ -98,7 +98,7 @@
         });
 
         bus.$on('deleteMark', (e) => {
-
+          ObjectManagerMarks.remove([e.id]);
         });
 
         bus.$on('openCircle', (e) => {

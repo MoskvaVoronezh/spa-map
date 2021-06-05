@@ -19,7 +19,7 @@
           <input :id="`lat-${index}`" v-model="markLat" type="text" class="card__input" placeholder="Введите широту">
         </div>
         <div class="card__group card__cancel">
-          <el-button class="button" type="info" @click="cancelMark">Отмена</el-button>
+          <el-button class="button" type="info" @click.stop="cancelMark">Отмена</el-button>
         </div>
         <div class="card__group card__save">
           <el-button class="button" type="primary" @click="saveMark">Сохранить</el-button>
@@ -30,8 +30,6 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import {MapObjects} from "@/interfaces/map-objects.interface";
-import IMark = MapObjects.IMark;
 import {bus} from "@/plugins/bus";
 
 @Component({})
@@ -61,6 +59,7 @@ export default class CardMark extends Vue {
     if ( this.data.lat && this.data.long) {
       bus.$emit('openMark',{ id: this.data.id, lat: this.data.lat, long: this.data.long, name: this.data.name, description: this.data.description });
     }
+    console.log('open')
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: this.data.id});
   }
 
@@ -80,6 +79,7 @@ export default class CardMark extends Vue {
       if (mark.id === this.data.id) {
         bus.$emit('deleteMark', {id: this.data.id});
         this.$store.dispatch('cards/clearMark', {id: this.data.id});
+        this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
       }
     })
   }
