@@ -15,6 +15,15 @@ class Resource {
                long: 82.998953,
                type: 'circle',
                radius: 10000,
+            },
+            {
+               name: 'Окружность 2',
+               address: 'адрес 2',
+               id: 'circle_2',
+               lat: 55.024159,
+               long: 81.1353,
+               type: 'circle',
+               radius: 10000,
             }
          ],
          marks: [
