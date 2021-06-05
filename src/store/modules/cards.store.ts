@@ -17,9 +17,11 @@ export default {
       setPropertyInState(state: IState, { name, value }: { name: string, value: any }) {
          Vue.set(state, name, value);
       },
+
       addCardMark(state: IState, mark: IMark) {
          return state.marks.push(mark);
       },
+
       addCardCircle(state: IState, circle: ICircle) {
          return state.circles.push(circle);
       },
@@ -36,14 +38,27 @@ export default {
            }
         })
       },
+
       clearMarkCard(state: IState, id) {
          return state.marks.map(mark => {
             if (mark.id === id) {
                mark.name = "";
                mark.description = "";
                mark.lat = "";
-               mark.lat = "";
+               mark.long = "";
                mark.state = "closed";
+            }
+         })
+      },
+      clearCircleCard(state, id) {
+         return state.circles.map(circle => {
+            if (circle.id === id) {
+               circle.name = "";
+               circle.address = "";
+               circle.lat = "";
+               circle.long = "";
+               circle.radius = null;
+               circle.state = 'closed';
             }
          })
       }
@@ -87,6 +102,17 @@ export default {
          try {
             const response = await sidebarResource.clearMark(payload.id);
             commit('clearMarkCard', payload.id);
+         }
+         catch (e) {
+            console.log(e);
+         }
+      },
+
+      async clearCircle({commit}, payload) {
+         try {
+            const response = await sidebarResource.clearCircle(payload.id);
+            console.log(payload.id);
+            commit('clearCircleCard', payload.id);
          }
          catch (e) {
             console.log(e);

@@ -98,6 +98,12 @@ class Resource {
       //delete elem in database;
    }
 
+   clearCircle(id): any {
+      //delete elem in database;
+   }
+
+
+
 }
 
 export const sidebarResource = new Resource();

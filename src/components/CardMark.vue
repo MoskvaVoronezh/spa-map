@@ -80,7 +80,7 @@ export default class CardMark extends Vue {
         this.$store.dispatch('cards/clearMark', {id: this.data.id});
         this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
       }
-    })
+    });
   }
 }
 </script>

@@ -23,7 +23,7 @@
         <input :id="`circle-lat$-${index}`" v-model="lat" type="text" class="card__input" placeholder="Введите широту">
       </div>
       <div class="card__group card__cancel">
-        <el-button class="button" type="info" @click="clearCircle">Отмена</el-button>
+        <el-button class="button" type="info" @click.stop="clearCircle">Отмена</el-button>
       </div>
       <div class="card__group card__save">
         <el-button class="button" type="primary">Сохранить</el-button>
@@ -74,7 +74,19 @@ export default class CardCircle extends Vue {
   }
 
   clearCircle() {
+    this.name = "";
+    this.address = "";
+    this.lat = "";
+    this.long = "";
+    this.radius = null;
 
+    this.$store.state.cards.circles.forEach(circle => {
+      if (circle.id === this.data.id) {
+        bus.$emit('deleteCircle', {id: this.data.id});
+        this.$store.dispatch('cards/clearCircle', {id: this.data.id});
+        this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
+      }
+    });
   }
 }
 </script>
@@ -117,7 +129,7 @@ export default class CardCircle extends Vue {
     height: 100%;
     max-height: 80px;
     resize: none;
-    color:#606266;
+    color: #606266;
     background: #FFF;
     border: 1px solid #DCDFE6;
     font-size: 14px;

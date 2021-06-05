@@ -101,6 +101,10 @@
           ObjectManagerMarks.remove([e.id]);
         });
 
+        bus.$on('deleteCircle', (e) => {
+          ObjectManagerCircles.remove([e.id]);
+        });
+
         bus.$on('openCircle', (e) => {
           ObjectManagerCircles.objects.balloon.open(e.id);
           this.map.setCenter([e.lat, e.long], 10);
