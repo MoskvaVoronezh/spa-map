@@ -10,7 +10,7 @@
                    </div>
                  </template>
                  <template v-else>
-                   <CardMark v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" ref="markCard" class="sidebar__list-item" />
+                   <CardMark v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" :ref="`markCard-${mark.id}`" class="sidebar__list-item" />
                  </template>
                </div>
             </div>
@@ -67,8 +67,8 @@
 		  return this.$store.state.cards.circles;
     }
 
-     get activeTab() {
-       return this.$store.state.cards.activeTab;
+    get activeTab() {
+      return this.$store.state.cards.activeTab;
     }
 
     set activeTab(tab) {

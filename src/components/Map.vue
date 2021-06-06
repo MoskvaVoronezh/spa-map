@@ -62,13 +62,16 @@
 
         this.map.geoObjects.events.add('click', (e) => {
           let thisPlacemark = e.get('target');
+          if (thisPlacemark.properties._data.balloonContentHeader === "" && thisPlacemark.properties._data.balloonContentBody === "<p></p>") {
+            this.map.balloon.events.close();
+          }
           this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: thisPlacemark.properties._data.id});
         });
 
         bus.$on('openMark', (mark) => {
           this.marksData.forEach(item => {
             if (item.id === mark.id) {
-              if (item.name || item.description) {
+              if (mark.name && mark.description) {
                 item.mark.balloon.open();
               }
               this.map.setCenter([mark.lat, mark.long], 10);
@@ -77,7 +80,7 @@
         });
 
         bus.$on('clearMark', (id) => {
-          let removeMark =(this.marksData as any).find(item => item.id === id);
+          let removeMark = (this.marksData as any).find(item => item.id === id);
           this.map.geoObjects.remove(removeMark.mark);
           this.marksData = this.marksData.filter(item => item.id !== id);
         });
