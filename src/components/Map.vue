@@ -39,6 +39,7 @@
           this.map.setCenter(result.geoObjects.position, 10);
         });
 
+        //marks logic
         this.marks.forEach(mark => {
           let markOnMap = new ymaps.GeoObject({
             type: 'Feature',
@@ -48,6 +49,7 @@
             },
             properties: {
               id: mark.id,
+              type: 'mark',
               draggable: false,
               balloonContentHeader: mark.name,
               hintContent: mark.name,
@@ -62,6 +64,9 @@
 
         this.map.geoObjects.events.add('click', (e) => {
           let thisPlacemark = e.get('target');
+          if (thisPlacemark.properties._data.type === 'mark') {
+            this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks'});
+          }
           if (thisPlacemark.properties._data.balloonContentHeader === "" && thisPlacemark.properties._data.balloonContentBody === "<p></p>") {
             this.map.balloon.events.close();
           }
@@ -69,6 +74,7 @@
         });
 
         bus.$on('openMark', (mark) => {
+          this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks'});
           this.marksData.forEach(item => {
             if (item.id === mark.id) {
               if (mark.name && mark.description) {
@@ -117,6 +123,28 @@
             this.map.geoObjects.add(markOnMap);
           }
         });
+
+        //circles logic
+        this.circles.forEach(circle => {
+          let circleOnMap = new ymaps.GeoObject({
+            type: 'Feature',
+            geometry: {
+              type: 'Circle',
+              coordinates: [circle.lat, circle.long],
+              radius: circle.radius
+            },
+            properties: {
+              id: circle.id,
+              type: 'circle',
+            },
+          }, {
+            draggable: true,
+          });
+
+          this.marksData.push({id: circle.id, mark: circleOnMap});
+
+          this.map.geoObjects.add(circleOnMap);
+        })
 			});
 		}
 	}
