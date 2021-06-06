@@ -63,17 +63,7 @@ export default class CardMark extends Vue {
   }
 
   saveMark() {
-    if (this.markName && this.markLong && this.markLat && this.markDescription) {
-      bus.$emit('saveMark', {id: this.data.id, name: this.markName, description: this.markDescription,lat: this.markLat, long: this.markLong});
-      this.$store.commit('cards/setStateMark', {id: this.data.id, state: 'closed'});
-      this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
-    }
 
-    if (!this.markName || !this.markDescription || !this.markLat || !this.markLong) {
-      this.$store.commit('cards/setStateMark', {id: this.data.id, state: 'error'});
-      this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
-
-    }
   }
 
   cancelMark() {
@@ -81,14 +71,6 @@ export default class CardMark extends Vue {
     this.markDescription = "";
     this.markLong = "";
     this.markLat = "";
-
-    this.$store.state.cards.marks.forEach(mark => {
-      if (mark.id === this.data.id) {
-        bus.$emit('deleteMark', {id: this.data.id});
-        this.$store.dispatch('cards/clearMark', {id: this.data.id});
-        this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
-      }
-    });
   }
 }
 </script>

@@ -79,14 +79,6 @@ export default class CardCircle extends Vue {
     this.lat = "";
     this.long = "";
     this.radius = null;
-
-    this.$store.state.cards.circles.forEach(circle => {
-      if (circle.id === this.data.id) {
-        bus.$emit('deleteCircle', {id: this.data.id});
-        this.$store.dispatch('cards/clearCircle', {id: this.data.id});
-        this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
-      }
-    });
   }
 }
 </script>
