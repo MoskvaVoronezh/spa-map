@@ -87,9 +87,10 @@
 
         bus.$on('saveMark', (payload) => {
           let currentMark = this.marksData.find(item => item.id === payload.id);
-          this.map.geoObjects.remove(currentMark.mark);
-          this.marksData = this.marksData.filter(item => item.id !== payload.id);
-
+          if (currentMark) {
+            this.map.geoObjects.remove(currentMark.mark);
+            this.marksData = this.marksData.filter(item => item.id !== payload.id);
+          }
           if (payload.lat && payload.long) {
             let markOnMap = new ymaps.GeoObject({
               type: 'Feature',
@@ -112,6 +113,8 @@
               id: payload.id,
               mark: markOnMap
             });
+
+            console.log(markOnMap);
 
             this.map.geoObjects.add(markOnMap);
           }

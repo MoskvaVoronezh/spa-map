@@ -34,6 +34,7 @@ export default {
               mark.lat = payload.lat;
               mark.long = payload.long;
               mark.id = payload.id;
+              mark.state = payload.name && payload.description ? 'close' : 'error';
               mark.isOpened = false;
            }
         });
