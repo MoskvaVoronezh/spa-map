@@ -57,18 +57,20 @@
 
           this.marksData.push({id: mark.id, mark: markOnMap});
 
-          markOnMap.events.add('click', (e) => {
-            let thisPlacemark = e.get('target');
-            this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: thisPlacemark.properties._data.id});
-          });
-
           this.map.geoObjects.add(markOnMap);
+        });
+
+        this.map.geoObjects.events.add('click', (e) => {
+          let thisPlacemark = e.get('target');
+          this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: thisPlacemark.properties._data.id});
         });
 
         bus.$on('openMark', (mark) => {
           this.marksData.forEach(item => {
             if (item.id === mark.id) {
-              item.mark.balloon.open();
+              if (item.name || item.description) {
+                item.mark.balloon.open();
+              }
               this.map.setCenter([mark.lat, mark.long], 10);
             }
           });
@@ -77,6 +79,39 @@
         bus.$on('clearMark', (id) => {
           let removeMark =(this.marksData as any).find(item => item.id === id);
           this.map.geoObjects.remove(removeMark.mark);
+          this.marksData = this.marksData.filter(item => item.id !== id);
+        });
+
+        bus.$on('saveMark', (payload) => {
+          let currentMark = this.marksData.find(item => item.id === payload.id);
+          this.map.geoObjects.remove(currentMark.mark);
+          this.marksData = this.marksData.filter(item => item.id !== payload.id);
+
+          if (payload.lat && payload.long) {
+            let markOnMap = new ymaps.GeoObject({
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [payload.lat, payload.long]
+              },
+              properties: {
+                id: payload.id,
+                draggable: false,
+                balloonContentHeader: payload.name,
+                hintContent: payload.name,
+                balloonContentBody: `<p>${payload.description}</p>`
+              }
+            });
+
+            this.map.balloon.close();
+
+            this.marksData.push({
+              id: payload.id,
+              mark: markOnMap
+            });
+
+            this.map.geoObjects.add(markOnMap);
+          }
         });
 			});
 		}

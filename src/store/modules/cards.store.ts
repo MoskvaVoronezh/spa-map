@@ -34,7 +34,6 @@ export default {
               mark.lat = payload.lat;
               mark.long = payload.long;
               mark.id = payload.id;
-              mark.state = 'closed';
               mark.isOpened = false;
            }
         });
@@ -130,7 +129,6 @@ export default {
       },
 
       async saveMark({commit}, payload) {
-         console.log(payload);
          try {
             const response = await sidebarResource.saveMark(payload);
             commit('saveMark', payload);

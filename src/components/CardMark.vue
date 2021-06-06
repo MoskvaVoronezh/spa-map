@@ -63,10 +63,20 @@ export default class CardMark extends Vue {
   }
 
   saveMark() {
+    if (!this.markName || !this.markDescription || !this.markLong || !this.markLat) {
+      console.log('setState');
+      this.$store.commit('cards/setStateMark', {id: this.data.id});
+    }
 
+    this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
+    this.$store.dispatch('cards/saveMark', { id: this.data.id, name: this.markName, description: this.markDescription, lat: this.markLat, long: this.markLong });
+    bus.$emit('saveMark', { id: this.data.id, name: this.markName, description: this.markDescription, lat: this.markLat, long: this.markLong });
   }
 
   cancelMark() {
+    if (this.markName === "" && this.markDescription === "" &&  this.markLong === "" &&  this.markLat === "") {
+      return;
+    }
     this.markName = "";
     this.markDescription = "";
     this.markLong = "";
