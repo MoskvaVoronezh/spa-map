@@ -76,7 +76,6 @@
     }
 
     addMark() {
-      console.log(this.$refs.markCard);
       this.$store.dispatch('cards/addCardMark');
     }
 

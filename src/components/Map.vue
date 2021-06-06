@@ -114,8 +114,6 @@
               mark: markOnMap
             });
 
-            console.log(markOnMap);
-
             this.map.geoObjects.add(markOnMap);
           }
         });

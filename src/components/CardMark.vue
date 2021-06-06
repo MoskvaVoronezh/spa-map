@@ -64,7 +64,6 @@ export default class CardMark extends Vue {
 
   saveMark() {
     if (!this.markName || !this.markDescription || !this.markLong || !this.markLat) {
-      console.log('setState');
       this.$store.commit('cards/setStateMark', {id: this.data.id});
     }
 
