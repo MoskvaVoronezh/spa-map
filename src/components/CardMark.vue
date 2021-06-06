@@ -71,6 +71,10 @@ export default class CardMark extends Vue {
     this.markDescription = "";
     this.markLong = "";
     this.markLat = "";
+
+    bus.$emit('clearMark', this.data.id);
+    this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
+    this.$store.dispatch('cards/clearMark', { id: this.data.id });
   }
 }
 </script>

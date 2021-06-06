@@ -49,7 +49,7 @@ export default {
                mark.long = "";
                mark.state = "closed";
             }
-         })
+         });
       },
 
       clearCircleCard(state, id) {
@@ -62,7 +62,7 @@ export default {
                circle.radius = null;
                circle.state = 'closed';
             }
-         })
+         });
       },
 
       setStateMark(state, payload) {

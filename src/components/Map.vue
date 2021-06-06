@@ -13,8 +13,8 @@
 	@Component({})
 	export default class Map extends Vue {
 		map: any;
-    circlesData: {}
-    marksData: {}
+    circlesData: any[] = [];
+    marksData: any[] = [];
 
     get marks(): IMark[] {
       return this.$store.state.cards.marks;
@@ -38,7 +38,47 @@
         ymaps.geolocation.get({provider: 'browser'}).then(result => {
           this.map.setCenter(result.geoObjects.position, 10);
         });
-			})
+
+        this.marks.forEach(mark => {
+          let markOnMap = new ymaps.GeoObject({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [mark.lat, mark.long]
+            },
+            properties: {
+              id: mark.id,
+              draggable: false,
+              balloonContentHeader: mark.name,
+              hintContent: mark.name,
+              balloonContentBody: `<p>${mark.description}</p>`
+            }
+          });
+
+          this.marksData.push({id: mark.id, mark: markOnMap});
+
+          markOnMap.events.add('click', (e) => {
+            let thisPlacemark = e.get('target');
+            this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: thisPlacemark.properties._data.id});
+          });
+
+          this.map.geoObjects.add(markOnMap);
+        });
+
+        bus.$on('openMark', (mark) => {
+          this.marksData.forEach(item => {
+            if (item.id === mark.id) {
+              item.mark.balloon.open();
+              this.map.setCenter([mark.lat, mark.long], 10);
+            }
+          });
+        });
+
+        bus.$on('clearMark', (id) => {
+          let removeMark =(this.marksData as any).find(item => item.id === id);
+          this.map.geoObjects.remove(removeMark.mark);
+        });
+			});
 		}
 	}
 </script>
