@@ -25,6 +25,7 @@ export default {
       addCardCircle(state: IState, circle: ICircle) {
          return state.circles.push(circle);
       },
+
       saveMark(state: IState, payload) {
         return state.marks.map(mark => {
            if (mark.id === payload.id) {
@@ -36,7 +37,7 @@ export default {
               mark.state = 'closed';
               mark.isOpened = false;
            }
-        })
+        });
       },
 
       clearMarkCard(state: IState, id) {
@@ -50,6 +51,7 @@ export default {
             }
          })
       },
+
       clearCircleCard(state, id) {
          return state.circles.map(circle => {
             if (circle.id === id) {
@@ -59,6 +61,14 @@ export default {
                circle.long = "";
                circle.radius = null;
                circle.state = 'closed';
+            }
+         })
+      },
+
+      setStateMark(state, payload) {
+         return state.marks.map(mark => {
+            if (mark.id === payload.id) {
+               mark.state = 'error';
             }
          })
       }

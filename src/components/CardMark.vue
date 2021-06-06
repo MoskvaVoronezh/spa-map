@@ -22,7 +22,7 @@
           <el-button class="button" type="info" @click.stop="cancelMark">Отмена</el-button>
         </div>
         <div class="card__group card__save">
-          <el-button class="button" type="primary" @click="saveMark">Сохранить</el-button>
+          <el-button class="button" type="primary" @click.stop="saveMark">Сохранить</el-button>
         </div>
       </div>
   </div>
@@ -63,8 +63,16 @@ export default class CardMark extends Vue {
   }
 
   saveMark() {
-    if (this.markName && this.markLong && this.markLat) {
-      console.log('все круто сохраняем');
+    if (this.markName && this.markLong && this.markLat && this.markDescription) {
+      bus.$emit('saveMark', {id: this.data.id, name: this.markName, description: this.markDescription,lat: this.markLat, long: this.markLong});
+      this.$store.commit('cards/setStateMark', {id: this.data.id, state: 'closed'});
+      this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
+    }
+
+    if (!this.markName || !this.markDescription || !this.markLat || !this.markLong) {
+      this.$store.commit('cards/setStateMark', {id: this.data.id, state: 'error'});
+      this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: null});
+
     }
   }
 
@@ -202,10 +210,11 @@ export default class CardMark extends Vue {
   &.card--open {
     //background-color: rgba(#409EFF, 0.4);
     background-color: #96C9FF;
-
-
-
     border: 1px solid #b3d8ff;
+  }
+
+  &.card--with-error {
+    background-color: #f56c6c;
   }
 
   &--open & {

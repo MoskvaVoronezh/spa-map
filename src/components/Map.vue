@@ -110,6 +110,11 @@
           this.map.setCenter([e.lat, e.long], 10);
         });
 
+        bus.$on('saveMark', (mark) => {
+          ObjectManagerMarks.objects.balloon.close(mark.id);
+          this.$store.commit('cards/saveMark', mark);
+        });
+
         ObjectManagerMarks.objects.events.add('click', (e) => {
           this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks' });
           this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
@@ -122,8 +127,6 @@
 
         ObjectManagerCircles.objects.events.add('drag', (e) => {
           console.log(e);
-          // this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles' });
-          // this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: e._sourceEvent.originalEvent.objectId });
         });
 			})
 		}
