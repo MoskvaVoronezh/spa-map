@@ -63,14 +63,17 @@
         });
 
         this.map.geoObjects.events.add('click', (e) => {
-          let thisPlacemark = e.get('target');
-          if (thisPlacemark.properties._data.type === 'mark') {
+          let thisObject = e.get('target');
+          if (thisObject.properties._data.type === 'mark') {
             this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks'});
           }
-          if (thisPlacemark.properties._data.balloonContentHeader === "" && thisPlacemark.properties._data.balloonContentBody === "<p></p>") {
+          else {
+            this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles'});
+          }
+          if (thisObject.properties._data.balloonContentHeader === "" && thisObject.properties._data.balloonContentBody === "<p></p>") {
             this.map.balloon.events.close();
           }
-          this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: thisPlacemark.properties._data.id});
+          this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: thisObject.properties._data.id});
         });
 
         bus.$on('openMark', (mark) => {
@@ -141,10 +144,49 @@
             draggable: true,
           });
 
-          this.marksData.push({id: circle.id, mark: circleOnMap});
+          this.circlesData.push({id: circle.id, circle: circleOnMap});
 
           this.map.geoObjects.add(circleOnMap);
-        })
+        });
+
+        bus.$on('clearCircle', (id) => {
+          let removeCircle = (this.circlesData as any).find(item => item.id === id);
+          this.map.geoObjects.remove(removeCircle.circle)
+        });
+
+        bus.$on('saveCircle', (payload) => {
+          let currentCircle = this.circlesData.find(item => item.id === payload.id);
+          if (currentCircle) {
+            this.map.geoObjects.remove(currentCircle.circle);
+            this.circlesData = this.circlesData.filter(item => item.id !== payload.id);
+          }
+          if (payload.lat && payload.long) {
+            let circleOnMap = new ymaps.GeoObject({
+              type: 'Feature',
+              geometry: {
+                type: 'Circle',
+                coordinates: [payload.lat, payload.long],
+                radius: payload.radius
+              },
+              properties: {
+                id: payload.id,
+                type: 'circle',
+              },
+            }, {
+              draggable: true,
+            });
+
+            this.map.balloon.close();
+
+            this.circlesData.push({
+              id: payload.id,
+              circle: circleOnMap
+            });
+
+            this.map.geoObjects.add(circleOnMap);
+          }
+        });
+
 			});
 		}
 	}

@@ -40,6 +40,21 @@ export default {
         });
       },
 
+      saveCircle(state: IState, payload) {
+        return state.circles.map(circle => {
+           if (circle.id === payload.id) {
+              circle.name = payload.name;
+              circle.address = payload.address;
+              circle.radius = payload.radius;
+              circle.lat = payload.lat;
+              circle.long = payload.long;
+              circle.id = payload.id;
+              circle.state = payload.name && payload.address && payload.radius ? 'close' : 'error';
+              circle.isOpened = false;
+           }
+        });
+      },
+
       clearMarkCard(state: IState, id) {
          return state.marks.map(mark => {
             if (mark.id === id) {
@@ -69,6 +84,14 @@ export default {
          return state.marks.map(mark => {
             if (mark.id === payload.id) {
                mark.state = 'error';
+            }
+         })
+      },
+
+      setStateCircle(state, payload) {
+         return state.circles.map(circle => {
+            if (circle.id === payload.id) {
+               circle.state = 'error';
             }
          })
       }
@@ -133,6 +156,16 @@ export default {
          try {
             const response = await sidebarResource.saveMark(payload);
             commit('saveMark', payload);
+         }
+         catch (e) {
+            console.log(e);
+         }
+      },
+
+      async saveCircle({commit}, payload) {
+         try {
+            const response = await sidebarResource.saveCircle(payload);
+            commit('saveCircle', payload);
          }
          catch (e) {
             console.log(e);

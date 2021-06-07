@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id }">
+  <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id, 'card--with-error': data.state === 'error' }">
     <h2 class="card__title" v-if="!(isOpened === data.id)">{{ data.name ? data.name : 'Здесь будет название вашей окружности' }}</h2>
     <div class="card__content card__content--circle">
       <div class="card__group card__name">
@@ -16,17 +16,17 @@
       </div>
       <div class="card__group card__long">
         <label :for="`circle-long-${index}`" class="card__label">Долгота</label>
-        <input :id="`circle-long-${index}`" v-model="long" type="text" class="card__input" placeholder="Введите долготу">
+        <input :id="`circle-long-${index}`" disabled v-model="long" type="text" class="card__input" placeholder="Введите долготу">
       </div>
       <div class="card__group card__lat">
         <label :for="`circle-lat-${index}`" class="card__label">Широта</label>
-        <input :id="`circle-lat$-${index}`" v-model="lat" type="text" class="card__input" placeholder="Введите широту">
+        <input :id="`circle-lat$-${index}`" disabled v-model="lat" type="text" class="card__input" placeholder="Введите широту">
       </div>
       <div class="card__group card__cancel">
         <el-button class="button" type="info" @click.stop="clearCircle">Отмена</el-button>
       </div>
       <div class="card__group card__save">
-        <el-button class="button" type="primary">Сохранить</el-button>
+        <el-button class="button" type="primary" @click.stop="saveCircle">Сохранить</el-button>
       </div>
     </div>
   </div>
@@ -73,12 +73,30 @@ export default class CardCircle extends Vue {
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: this.data.id});
   }
 
+  saveCircle() {
+    if (!this.name || !this.address || !this.radius || !this.lat || !this.long) {
+      this.$store.commit('cards/setStateCircle', {id: this.data.id});
+    }
+
+    this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
+    this.$store.dispatch('cards/saveCircle', { id: this.data.id, lat: this.lat, long: this.long, name: this.name, radius: this.radius, address: this.address });
+    bus.$emit('saveCircle', { id: this.data.id, lat: this.lat, long: this.long, name: this.name, radius: this.radius, address: this.address });
+  }
+
   clearCircle() {
+    if (this.name === "" && this.address === "" && this.radius === null && this.lat === "" && this.long === "") {
+      return;
+    }
+
     this.name = "";
     this.address = "";
     this.lat = "";
     this.long = "";
     this.radius = null;
+
+    bus.$emit('clearCircle', this.data.id);
+    this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
+    this.$store.dispatch('cards/clearCircle', { id: this.data.id });
   }
 }
 </script>

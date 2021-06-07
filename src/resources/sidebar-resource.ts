@@ -55,7 +55,7 @@ class Resource {
       }
    }
 
-   generateID() {
+   generateID(): string {
       return '_' + Math.random().toString(36).substr(2, 9);
    }
 
@@ -91,6 +91,10 @@ class Resource {
    }
 
    saveMark(mark):any {
+      //api request for save mark
+   }
+
+   saveCircle(circle):any {
       //api request for save mark
    }
 
