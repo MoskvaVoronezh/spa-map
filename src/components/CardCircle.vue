@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id, 'card--with-error': data.state === 'error' }">
-    <h2 class="card__title" v-if="!(isOpened === data.id)">{{ data.name ? data.name : 'Здесь будет название вашей окружности' }}</h2>
+    <h2 class="card__title" v-if="!(isOpened === data.id)">{{ !isOpened && data.name === "" ? data.address : data.name ? data.name : 'Здесь будет название вашей окружности' }}</h2>
     <div class="card__content card__content--circle">
       <div class="card__group card__name">
         <label :for="`name-circle-${index}`" class="card__label">Название</label>
