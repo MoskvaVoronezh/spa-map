@@ -76,6 +76,12 @@
           this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: thisObject.properties._data.id});
         });
 
+        this.map.geoObjects.events.add('dragend', (e) => {
+          let thisObject = e.get('target');
+          let coords = thisObject.geometry._coordinates;
+          this.$store.commit('cards/saveCoords', {id: thisObject.properties._data.id, coords});
+        });
+
         bus.$on('openMark', (mark) => {
           this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks'});
           this.marksData.forEach(item => {
@@ -174,6 +180,7 @@
               },
             }, {
               draggable: true,
+              fillColor: '#000',
             });
 
             this.map.balloon.close();
@@ -186,6 +193,10 @@
             this.map.geoObjects.add(circleOnMap);
           }
         });
+
+        bus.$on('openCircle', (payload) => {
+
+        })
 
 			});
 		}

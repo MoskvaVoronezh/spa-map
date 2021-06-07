@@ -94,6 +94,15 @@ export default {
                circle.state = 'error';
             }
          })
+      },
+
+      saveCoords(state, payload) {
+         return state.circles.map(circle => {
+            if (circle.id === payload.id) {
+               circle.lat = payload.coords[0];
+               circle.long = payload.coords[1];
+            }
+         });
       }
    },
    actions: {
