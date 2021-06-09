@@ -80,6 +80,7 @@
           let thisObject = e.get('target');
           let coords = thisObject.geometry._coordinates;
           this.$store.commit('cards/saveCoords', {id: thisObject.properties._data.id, coords});
+          bus.$emit('updateCoordsCircle', {id: thisObject.properties._data.id, coords});
         });
 
         bus.$on('openMark', (mark) => {
@@ -195,7 +196,7 @@
         });
 
         bus.$on('openCircle', (payload) => {
-
+          this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles'});
         })
 
 			});

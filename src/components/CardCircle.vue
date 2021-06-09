@@ -35,8 +35,8 @@
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
 import {MapObjects} from "@/interfaces/map-objects.interface";
-import IMark = MapObjects.IMark;
 import {bus} from "@/plugins/bus";
+import ICircle = MapObjects.ICircle;
 
 @Component({})
 export default class CardCircle extends Vue {
@@ -58,7 +58,12 @@ export default class CardCircle extends Vue {
   }
 
   mounted() {
-
+    bus.$on('updateCoordsCircle', (data) => {
+      if (data.id === this.data.id) {
+        this.lat = data.coords[0];
+        this.long = data.coords[1];
+      }
+    });
   }
 
   get isOpened(): boolean {

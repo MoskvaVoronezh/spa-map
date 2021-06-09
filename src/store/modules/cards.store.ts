@@ -102,6 +102,7 @@ export default {
                circle.lat = payload.coords[0];
                circle.long = payload.coords[1];
             }
+            return circle;
          });
       }
    },
