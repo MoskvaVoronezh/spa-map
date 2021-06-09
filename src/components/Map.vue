@@ -197,6 +197,12 @@
 
         bus.$on('openCircle', (payload) => {
           this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles'});
+          this.circles.forEach(item => {
+            if (item.id === payload.id) {
+              console.log('раскрасить цветом');
+              this.map.setCenter([item.lat, item.long], 10);
+            }
+          })
         })
 
 			});
