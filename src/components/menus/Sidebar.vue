@@ -64,7 +64,6 @@
     }
 
     get circles(): ICircle[] {
-      console.log(this.$store.state.cards.circles);
 		  return this.$store.state.cards.circles;
     }
 
