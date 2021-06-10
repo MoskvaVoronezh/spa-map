@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="open" :class="{ 'card--open': isOpened === data.id, 'card--with-error': data.state === 'error' }">
-    <h2 class="card__title" v-if="!(isOpened === data.id)">{{ !isOpened && data.name === "" ? data.address : data.name ? data.name : 'Здесь будет название вашей окружности' }}</h2>
+    <h2 class="card__title" v-if="!(isOpened === data.id)">{{ !isOpened && data.name === "" && data.address ? data.address : data.name ? data.name : 'Здесь будет название вашей окружности' }}</h2>
     <div class="card__content card__content--circle">
       <div class="card__group card__name">
         <label :for="`name-circle-${index}`" class="card__label">Название</label>
@@ -84,7 +84,9 @@ export default class CardCircle extends Vue {
     }
 
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
-    this.$store.dispatch('cards/saveCircle', { id: this.data.id, lat: this.lat, long: this.long, name: this.name, radius: this.radius, address: this.address });
+    if (this.lat && this.long) {
+      this.$store.dispatch('cards/saveCircle', { id: this.data.id, lat: this.lat, long: this.long, name: this.name, radius: this.radius, address: this.address });
+    }
     bus.$emit('saveCircle', { id: this.data.id, lat: this.lat, long: this.long, name: this.name, radius: this.radius, address: this.address });
   }
 

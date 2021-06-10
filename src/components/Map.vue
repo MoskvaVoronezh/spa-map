@@ -8,6 +8,7 @@
   import IMark = MapObjects.IMark;
   import ICircle = MapObjects.ICircle;
   import {bus} from "@/plugins/bus";
+  import {createLogger} from "vuex";
 	declare var ymaps: any;
 
 	@Component({})
@@ -181,7 +182,6 @@
               },
             }, {
               draggable: true,
-              fillColor: '#000',
             });
 
             this.map.balloon.close();
@@ -192,6 +192,35 @@
             });
 
             this.map.geoObjects.add(circleOnMap);
+          }
+          else {
+            let myGeocoder  = ymaps.geocode(payload.address).then((resolve) => {
+              let coords = resolve.geoObjects.get(0).geometry._coordinates;
+
+              let circleOnMap = new ymaps.GeoObject({
+                type: 'Feature',
+                geometry: {
+                  type: 'Circle',
+                  coordinates: [coords[0], coords[1]],
+                  radius: payload.radius
+                },
+                properties: {
+                  id: payload.id,
+                  type: 'circle',
+                },
+              }, {
+                draggable: true,
+              });
+
+              this.circlesData.push({
+                id: payload.id,
+                circle: circleOnMap
+              });
+
+              this.map.geoObjects.add(circleOnMap);
+            }).catch(e => {
+              console.log(e);
+            });
           }
         });
 
