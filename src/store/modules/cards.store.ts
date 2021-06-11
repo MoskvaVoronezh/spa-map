@@ -101,6 +101,7 @@ export default {
             if (circle.id === payload.id) {
                circle.lat = payload.coords[0];
                circle.long = payload.coords[1];
+               circle.address = payload.address;
             }
             return circle;
          });

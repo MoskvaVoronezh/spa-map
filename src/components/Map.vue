@@ -80,8 +80,12 @@
         this.map.geoObjects.events.add('dragend', (e) => {
           let thisObject = e.get('target');
           let coords = thisObject.geometry._coordinates;
-          this.$store.commit('cards/saveCoords', {id: thisObject.properties._data.id, coords});
-          bus.$emit('updateCoordsCircle', {id: thisObject.properties._data.id, coords});
+          const myReverseGeocoder = ymaps.geocode([coords[0],coords[1]]);
+          myReverseGeocoder.then((res) => {
+            let address = res.geoObjects.get(0).properties.get('text');
+            this.$store.commit('cards/saveCoords', {id: thisObject.properties._data.id, coords});
+            bus.$emit('updateCoordsCircle', {id: thisObject.properties._data.id, coords, address});
+          });
         });
 
         bus.$on('openMark', (mark) => {

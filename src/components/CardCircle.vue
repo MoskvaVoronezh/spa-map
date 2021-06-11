@@ -62,6 +62,7 @@ export default class CardCircle extends Vue {
       if (data.id === this.data.id) {
         this.lat = data.coords[0];
         this.long = data.coords[1];
+        this.address = data.address;
       }
     });
   }
