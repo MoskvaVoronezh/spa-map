@@ -83,7 +83,7 @@
           const myReverseGeocoder = ymaps.geocode([coords[0],coords[1]]);
           myReverseGeocoder.then((res) => {
             let address = res.geoObjects.get(0).properties.get('text');
-            this.$store.commit('cards/saveCoords', {id: thisObject.properties._data.id, coords});
+            this.$store.commit('cards/saveCoords', {id: thisObject.properties._data.id, coords, address});
             bus.$emit('updateCoordsCircle', {id: thisObject.properties._data.id, coords, address});
           });
         });

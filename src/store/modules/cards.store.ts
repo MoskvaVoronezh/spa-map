@@ -41,6 +41,19 @@ export default {
       },
 
       saveCircle(state: IState, payload) {
+         let res = state.circles.map(circle => {
+            if (circle.id === payload.id) {
+               circle.name = payload.name;
+               circle.address = payload.address;
+               circle.radius = payload.radius;
+               circle.lat = payload.lat;
+               circle.long = payload.long;
+               circle.id = payload.id;
+               circle.state = payload.name && payload.address && payload.radius ? 'close' : 'error';
+               circle.isOpened = false;
+            }
+         });
+         console.log(res);
         return state.circles.map(circle => {
            if (circle.id === payload.id) {
               circle.name = payload.name;

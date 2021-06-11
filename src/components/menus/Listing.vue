@@ -7,12 +7,60 @@
       <el-tabs v-model="activeListingTab" class="listing__tabs">
          <el-tab-pane label="Метки" name="marks" class="listing__button">
             <div class="listing__content">
-               <div class="listing__list">
-                
+               <div class="listing__list" v-for="mark of marks" :key="mark.id">
+                  <div class="listing__row">
+                    <div class="listing__field">ID</div>
+                    <div class="listing__value">{{ mark.id }}</div>
+                  </div>
+                 <div class="listing__row">
+                   <div class="listing__field">Название</div>
+                   <div class="listing__value">{{ mark.name }}</div>
+                 </div>
+                 <div class="listing__row">
+                   <div class="listing__field">Описание</div>
+                   <div class="listing__value">{{ mark.description }}</div>
+                 </div>
+                 <div class="listing__row">
+                   <div class="listing__field">Широта</div>
+                   <div class="listing__value">{{ mark.lat }}</div>
+                 </div>
+                 <div class="listing__row">
+                   <div class="listing__field">Долгота</div>
+                   <div class="listing__value">{{ mark.long }}</div>
+                 </div>
                </div>
             </div>
          </el-tab-pane>
-         <el-tab-pane label="Окружности" name="circles">Окружность</el-tab-pane>
+         <el-tab-pane label="Окружности" name="circles">
+           <div class="listing__content">
+             <div class="listing__list" v-for="circle of circles" :key="circle.id">
+               <div class="listing__row">
+                 <div class="listing__field">ID</div>
+                 <div class="listing__value">{{ circle.id }}</div>
+               </div>
+               <div class="listing__row">
+                 <div class="listing__field">Название</div>
+                 <div class="listing__value">{{ circle.name }}</div>
+               </div>
+               <div class="listing__row">
+                 <div class="listing__field">Адрес</div>
+                 <div class="listing__value">{{ circle.address }}</div>
+               </div>
+               <div class="listing__row">
+                 <div class="listing__field">Радиус</div>
+                 <div class="listing__value">{{ circle.radius }}</div>
+               </div>
+               <div class="listing__row">
+                 <div class="listing__field">Широта</div>
+                 <div class="listing__value">{{ circle.lat }}</div>
+               </div>
+               <div class="listing__row">
+                 <div class="listing__field">Долгота</div>
+                 <div class="listing__value">{{ circle.long }}</div>
+               </div>
+             </div>
+           </div>
+         </el-tab-pane>
       </el-tabs>
     </div>
   </aside>
@@ -20,11 +68,22 @@
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
+  import {MapObjects} from "@/interfaces/map-objects.interface";
+  import IMark = MapObjects.IMark;
+  import ICircle = MapObjects.ICircle;
 
   @Component({})
   export default class Listing extends Vue {
     menuOpen: boolean = false;
     activeListingTab = 'marks';
+
+    get marks(): IMark[] {
+      return this.$store.state.cards.marks;
+    }
+
+    get circles(): ICircle[] {
+      return this.$store.state.cards.circles;
+    }
 
     switchMenu() {
       this.menuOpen = !this.menuOpen;
@@ -46,6 +105,35 @@
     display: flex;
     flex-direction: column;
     border: 1px solid #DCDFE6;
+
+    &__row {
+      display: flex;
+      justify-items: flex-start;
+      align-items: stretch;
+      border: 1px solid #E4E7ED;
+      border-top: none;
+      &:first-child {
+        border-top: 1px solid #E4E7ED;
+      }
+    }
+
+    &__list {
+      &:not(&:first-child) {
+        margin-top: 10px;
+      }
+    }
+
+    &__field {
+      padding: 10px;
+      min-width: 100px;
+      font-weight: bold;
+      border-right: 1px solid #E4E7ED;
+    }
+
+    &__value {
+      flex-grow: 1;
+      padding: 10px;
+    }
 
     &--open {
       width: 33vw;
