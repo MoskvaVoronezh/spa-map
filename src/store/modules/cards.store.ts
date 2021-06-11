@@ -91,7 +91,7 @@ export default {
       setStateCircle(state, payload) {
          return state.circles.map(circle => {
             if (circle.id === payload.id) {
-               circle.state = 'error';
+               circle.state = payload.state;
             }
          })
       },

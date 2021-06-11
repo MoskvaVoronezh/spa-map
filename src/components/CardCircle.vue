@@ -81,7 +81,7 @@ export default class CardCircle extends Vue {
 
   saveCircle() {
     if (!this.name || !this.address || !this.radius || !this.lat || !this.long) {
-      this.$store.commit('cards/setStateCircle', {id: this.data.id});
+      this.$store.commit('cards/setStateCircle', {id: this.data.id, state: 'error'});
     }
 
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
@@ -93,6 +93,7 @@ export default class CardCircle extends Vue {
 
   clearCircle() {
     if (this.name === "" && this.address === "" && this.radius === null && this.lat === "" && this.long === "") {
+      this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
       return;
     }
 
