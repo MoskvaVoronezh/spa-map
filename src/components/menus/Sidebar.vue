@@ -24,7 +24,7 @@
                     </div>
                   </template>
                   <template v-else>
-                    <CardCircle v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" ref="circleCard" class="sidebar__list-item"/>
+                    <CardCircle v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" :ref="`circleCard-${circle.id}`" class="sidebar__list-item"/>
                   </template>
                </div>
             </div>
