@@ -34,6 +34,7 @@ export default {
               mark.lat = payload.lat;
               mark.long = payload.long;
               mark.id = payload.id;
+              mark.type = 'mark';
               mark.state = payload.name && payload.description ? 'close' : 'error';
               mark.isOpened = false;
            }
@@ -49,6 +50,7 @@ export default {
               circle.lat = payload.lat;
               circle.long = payload.long;
               circle.id = payload.id;
+              circle.type = 'circle';
               circle.state = payload.name && payload.address && payload.radius ? 'close' : 'error';
               circle.isOpened = false;
            }
