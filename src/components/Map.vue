@@ -67,9 +67,11 @@
           let thisObject = e.get('target');
           if (thisObject.properties._data.type === 'mark') {
             this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'marks'});
+            bus.$emit('scrollToMark', (thisObject.properties._data.id));
           }
           else {
             this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles'});
+            bus.$emit('scrollToCircle', (thisObject.properties._data.id));
           }
           if (thisObject.properties._data.balloonContentHeader === "" && thisObject.properties._data.balloonContentBody === "<p></p>") {
             this.map.balloon.events.close();
