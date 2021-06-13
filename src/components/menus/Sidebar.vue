@@ -68,7 +68,6 @@
       });
 
       bus.$on('openCardCircle', (id) => {
-        console.log(this.$refs[`circleCard-${id}`][0].data);
         if (this.$refs[`circleCard-${id}`][0].data.name === "" || this.$refs[`circleCard-${id}`][0].data.address === "" || this.$refs[`circleCard-${id}`][0].data.lat === "" || this.$refs[`circleCard-${id}`][0].data.long === "" || this.$refs[`circleCard-${id}`][0].data.radius === "") {
           this.$store.commit('cards/setStateCircle', { id, state: 'error' });
         }
