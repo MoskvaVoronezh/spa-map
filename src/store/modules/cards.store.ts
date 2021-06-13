@@ -86,7 +86,7 @@ export default {
       setStateMark(state, payload) {
          return state.marks.map(mark => {
             if (mark.id === payload.id) {
-               mark.state = 'error';
+               mark.state = payload.state;
             }
          })
       },

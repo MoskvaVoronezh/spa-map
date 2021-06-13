@@ -9,7 +9,7 @@
                      <h2 class="card__title">Нажмите чтобы создать метку</h2>
                    </div>
                  </template>
-                 <template v-else>
+                 <template v-show="marks.length > 0">
                    <CardMark v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" :ref="`markCard-${mark.id}`" class="sidebar__list-item" />
                  </template>
                </div>
@@ -37,16 +37,17 @@
 
 <script lang="ts">
   import {Component, Vue} from "vue-property-decorator";
-  import CardMark from "@/components/CardMark.vue";
-  import CardCircle from "@/components/CardCircle.vue";
   import {MapObjects} from "@/interfaces/map-objects.interface";
   import IMark = MapObjects.IMark;
   import ICircle = MapObjects.ICircle;
+  import CardMark from "@/components/CardMark.vue";
+  import CardCircle from "@/components/CardCircle.vue";
+  import {bus} from "@/plugins/bus";
 
   @Component({
      components: {
        CardMark,
-       CardCircle
+       CardCircle,
      },
      computed: {
      }
@@ -58,6 +59,21 @@
         this.$store.dispatch('cards/getLists');
       }
 		}
+
+		mounted() {
+		  bus.$on('openCardMark', (id) => {
+        if (this.$refs[`markCard-${id}`][0].data.name === "" || this.$refs[`markCard-${id}`][0].data.description === "" || this.$refs[`markCard-${id}`][0].data.lat === "" || this.$refs[`markCard-${id}`][0].data.long === "") {
+          this.$store.commit('cards/setStateMark', { id, state: 'error' });
+        }
+      });
+
+      bus.$on('openCardCircle', (id) => {
+        console.log(this.$refs[`circleCard-${id}`][0].data);
+        if (this.$refs[`circleCard-${id}`][0].data.name === "" || this.$refs[`circleCard-${id}`][0].data.address === "" || this.$refs[`circleCard-${id}`][0].data.lat === "" || this.$refs[`circleCard-${id}`][0].data.long === "" || this.$refs[`circleCard-${id}`][0].data.radius === "") {
+          this.$store.commit('cards/setStateCircle', { id, state: 'error' });
+        }
+      });
+    }
 
 		get marks(): IMark[] {
       return this.$store.state.cards.marks;
