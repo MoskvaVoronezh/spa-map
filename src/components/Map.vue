@@ -151,6 +151,9 @@
             properties: {
               id: circle.id,
               type: 'circle',
+              balloonContentHeader: circle.name,
+              hintContent: circle.name,
+              balloonContentBody: ``
             },
           }, {
             draggable: true,
@@ -183,6 +186,9 @@
               properties: {
                 id: payload.id,
                 type: 'circle',
+                balloonContentHeader: payload.name,
+                hintContent: payload.name,
+                balloonContentBody: ``
               },
             }, {
               draggable: true,
@@ -211,6 +217,9 @@
                 properties: {
                   id: payload.id,
                   type: 'circle',
+                  balloonContentHeader: payload.name,
+                  hintContent: payload.name,
+                  balloonContentBody: ``
                 },
               }, {
                 draggable: true,
@@ -230,14 +239,15 @@
 
         bus.$on('openCircle', (payload) => {
           this.$store.commit('cards/setPropertyInState', { name: 'activeTab', value: 'circles'});
-          this.circles.forEach(item => {
+          this.circlesData.forEach(item => {
             if (item.id === payload.id) {
-              console.log('раскрасить цветом');
-              this.map.setCenter([item.lat, item.long], 10);
+              if (payload.name && payload.radius) {
+                item.circle.balloon.open();
+              }
+              this.map.setCenter([payload.lat, payload.long], 10);
             }
-          })
-        })
-
+          });
+        });
 			});
 		}
 	}

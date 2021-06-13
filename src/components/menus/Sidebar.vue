@@ -61,15 +61,21 @@
 		}
 
 		mounted() {
-		  bus.$on('openCardMark', (id) => {
-        if (this.$refs[`markCard-${id}`][0].data.name === "" || this.$refs[`markCard-${id}`][0].data.description === "" || this.$refs[`markCard-${id}`][0].data.lat === "" || this.$refs[`markCard-${id}`][0].data.long === "") {
-          this.$store.commit('cards/setStateMark', { id, state: 'error' });
+		  bus.$on('openCardMark', () => {
+		    let id = this.$store.state.cards.activeElem ? this.$store.state.cards.activeElem : null;
+        if (id) {
+          if (this.$refs[`markCard-${id}`][0].markName === "" || this.$refs[`markCard-${id}`][0].markDescription === "" || this.$refs[`markCard-${id}`][0].data.lat === "" || this.$refs[`markCard-${id}`][0].data.long === "") {
+            this.$store.commit('cards/setStateMark', { id, state: 'error' });
+          }
         }
       });
 
-      bus.$on('openCardCircle', (id) => {
-        if (this.$refs[`circleCard-${id}`][0].data.name === "" || this.$refs[`circleCard-${id}`][0].data.address === "" || this.$refs[`circleCard-${id}`][0].data.lat === "" || this.$refs[`circleCard-${id}`][0].data.long === "" || this.$refs[`circleCard-${id}`][0].data.radius === "") {
-          this.$store.commit('cards/setStateCircle', { id, state: 'error' });
+      bus.$on('openCardCircle', () => {
+        let id = this.$store.state.cards.activeElem ? this.$store.state.cards.activeElem : null;
+        if (id) {
+          if (this.$refs[`circleCard-${id}`][0]?.data?.name === "" || this.$refs[`circleCard-${id}`][0]?.data?.address === "" || this.$refs[`circleCard-${id}`][0]?.data?.lat === "" || this.$refs[`circleCard-${id}`][0]?.data?.long === "" || this.$refs[`circleCard-${id}`][0]?.data?.radius === "") {
+            this.$store.commit('cards/setStateCircle', {id, state: 'error'});
+          }
         }
       });
     }
