@@ -31,7 +31,7 @@
     position: relative;
     display: flex;
     align-items: stretch;
-    overflow-x: hidden;
+    overflow: hidden;
 
     &__map {
       flex: 1;

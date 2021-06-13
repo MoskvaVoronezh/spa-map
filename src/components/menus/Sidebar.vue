@@ -30,8 +30,8 @@
             </div>
          </el-tab-pane>
       </el-tabs>
-      <el-button v-if="activeTab === 'marks'" type="primary" :disabled="marks.length === 0" @click="addMark">Добавить метку</el-button>
-      <el-button v-if="activeTab === 'circles'" type="primary" :disabled="circles.length === 0" @click="addCircle">Добавить окружность</el-button>
+      <el-button class="sidebar__button" v-if="activeTab === 'marks'" type="primary" :disabled="marks.length === 0" @click="addMark">Добавить метку</el-button>
+      <el-button class="sidebar__button" v-if="activeTab === 'circles'" type="primary" :disabled="circles.length === 0" @click="addCircle">Добавить окружность</el-button>
   </aside>
 </template>
 
@@ -97,6 +97,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    position: relative;
     &__tabs {
       flex-grow: 1;
       .el-tabs__header {
@@ -114,6 +115,11 @@
 
     &__list-item {
       margin-bottom: 20px;
+    }
+
+    &__button {
+      position: sticky;
+      bottom: 0;
     }
   }
 
