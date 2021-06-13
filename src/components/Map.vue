@@ -122,6 +122,7 @@
               properties: {
                 id: payload.id,
                 draggable: false,
+                type: 'mark',
                 balloonContentHeader: payload.name,
                 hintContent: payload.name,
                 balloonContentBody: `<p>${payload.description}</p>`
