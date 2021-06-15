@@ -42,20 +42,20 @@ export default {
       },
 
       saveCircle(state: IState, payload) {
-        return state.circles.map(circle => {
-           if (circle.id === payload.id) {
-              circle.name = payload.name;
-              circle.address = payload.address;
-              circle.radius = payload.radius;
-              circle.lat = payload.lat;
-              circle.long = payload.long;
-              circle.id = payload.id;
-              circle.type = 'circle';
-              circle.state = payload.name && payload.address && payload.radius ? 'close' : 'error';
-              circle.isOpened = false;
-           }
-           return circle;
-        });
+         return state.circles.map(circle => {
+            if (circle.id === payload.id) {
+               circle.name = payload.name;
+               circle.address = payload.address;
+               circle.radius = payload.radius;
+               circle.lat = payload.lat;
+               circle.long = payload.long;
+               circle.id = payload.id;
+               circle.type = 'circle';
+               circle.state = payload.name && payload.address && payload.radius ? 'close' : 'error';
+               circle.isOpened = false;
+            }
+            return circle;
+         });
       },
 
       clearMarkCard(state: IState, id) {
@@ -158,7 +158,6 @@ export default {
       async clearCircle({commit}, payload) {
          try {
             const response = await sidebarResource.clearCircle(payload.id);
-            console.log(payload.id);
             commit('clearCircleCard', payload.id);
          }
          catch (e) {

@@ -153,6 +153,13 @@
       flex: 1;
     }
 
+    &__tabs {
+      .listing__content {
+        overflow-y: auto;
+        max-height: 895px;
+      }
+    }
+
     &__switch {
       width: 40px;
       height: 40px;

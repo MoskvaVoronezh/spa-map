@@ -49,6 +49,10 @@ export default class CardCircle extends Vue {
   long: string = ""
   radius: number = null;
 
+  get circles(): ICircle[] {
+    return this.$store.state.cards.circles;
+  }
+
   created() {
     this.name = this.data.name;
     this.address = this.data.address;
@@ -63,6 +67,13 @@ export default class CardCircle extends Vue {
         this.lat = data.coords[0];
         this.long = data.coords[1];
         this.address = data.address;
+      }
+    });
+
+    this.circles.forEach(item => {
+      if(item.id === this.data.id) {
+        this.lat = item.lat;
+        this.long = item.long;
       }
     });
   }
@@ -80,14 +91,12 @@ export default class CardCircle extends Vue {
   }
 
   saveCircle() {
-    if (!this.name || !this.address || !this.radius || !this.lat || !this.long) {
+    if (!this.name || !this.address || !this.radius) {
       this.$store.commit('cards/setStateCircle', {id: this.data.id, state: 'error'});
     }
 
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
-    if (this.lat && this.long) {
-      this.$store.dispatch('cards/saveCircle', { id: this.data.id, lat: this.lat, long: this.long, name: this.name, radius: this.radius, address: this.address });
-    }
+    this.$store.dispatch('cards/saveCircle', { id: this.data.id, lat: this.lat, long: this.long, name: this.name, radius: this.radius, address: this.address });
     bus.$emit('saveCircle', { id: this.data.id, lat: this.lat, long: this.long, name: this.name, radius: this.radius, address: this.address });
   }
 

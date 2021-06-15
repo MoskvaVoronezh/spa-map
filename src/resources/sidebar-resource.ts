@@ -6,26 +6,7 @@ class Resource {
    getLists() :any  {
       const url = 'url';
       return {
-         circles: [
-            {
-               name: 'Окружность 1',
-               address: 'адрес',
-               id: 'circle_1',
-               lat: 55.044159,
-               long: 82.998953,
-               type: 'circle',
-               radius: 10000,
-            },
-            {
-               name: 'Окружность 2',
-               address: 'адрес 2',
-               id: 'circle_2',
-               lat: 55.024159,
-               long: 81.1353,
-               type: 'circle',
-               radius: 10000,
-            }
-         ],
+         circles: [],
          marks: [
             {
                name: 'Метка 1',

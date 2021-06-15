@@ -210,6 +210,10 @@
           else {
             let myGeocoder  = ymaps.geocode(payload.address).then((resolve) => {
               let coords = resolve.geoObjects.get(0).geometry._coordinates;
+              let address = resolve.geoObjects.get(0).properties.get('text');
+
+              this.$store.commit('cards/saveCoords', {id: payload.id, coords, address});
+              bus.$emit('updateCoordsCircle', {id: payload.id, coords, address});
 
               let circleOnMap = new ymaps.GeoObject({
                 type: 'Feature',
