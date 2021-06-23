@@ -2,7 +2,7 @@
   <div class="page">
     <Sidebar class="page__sidebar"/>
     <main class="page__map">
-      <Map />
+      <Map :key="keyMap" />
     </main>
     <Listing class="page__listing"/>
   </div>
@@ -13,6 +13,7 @@
   import Sidebar from "@/components/menus/Sidebar.vue";
   import Listing from "@/components/menus/Listing.vue";
   import Map from "@/components/Map.vue";
+  import {bus} from "@/plugins/bus";
   
 
   @Component({
@@ -23,6 +24,17 @@
     }
   })
   export default class HomePage extends Vue {
+    keyMap = 0;
+
+    mounted() {
+      bus.$on('updateMapComponent', () => {
+        this.keyMap++;
+      });
+    }
+
+    destroyed() {
+      bus.$off('updateMapComponent');
+    }
   }
 </script>
 

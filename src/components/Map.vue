@@ -8,7 +8,7 @@
   import IMark = MapObjects.IMark;
   import ICircle = MapObjects.ICircle;
   import {bus} from "@/plugins/bus";
-  import {createLogger} from "vuex";
+
 	declare var ymaps: any;
 
 	@Component({})
@@ -105,8 +105,10 @@
 
         bus.$on('clearMark', (id) => {
           let removeMark = (this.marksData as any).find(item => item.id === id);
-          this.map.geoObjects.remove(removeMark.mark);
-          this.marksData = this.marksData.filter(item => item.id !== id);
+          if (removeMark.mark) {
+            this.map.geoObjects.remove(removeMark.mark);
+            this.marksData = this.marksData.filter(item => item.id !== id);
+          }
         });
 
         bus.$on('saveMark', (payload) => {
@@ -174,7 +176,9 @@
 
         bus.$on('clearCircle', (id) => {
           let removeCircle = (this.circlesData as any).find(item => item.id === id);
-          this.map.geoObjects.remove(removeCircle.circle)
+          if (removeCircle.circle) {
+            this.map.geoObjects.remove(removeCircle.circle);
+          }
         });
 
         bus.$on('saveCircle', (payload) => {
@@ -247,6 +251,7 @@
               console.log(e);
             });
           }
+          //bus.$emit('updateMapComponent');
         });
 
         bus.$on('openCircle', (payload) => {
@@ -255,6 +260,7 @@
             if (item.id === payload.id) {
               if (payload.name && payload.radius) {
                 item.circle.balloon.open();
+                item.circle.editor.startEditing();
               }
               this.map.setCenter([payload.lat, payload.long], 10);
             }
@@ -262,7 +268,16 @@
         });
 			});
 		}
-	}
+
+		destroyed() {
+      bus.$off('openMark');
+      bus.$off('clearMark');
+      bus.$off('saveMark');
+      bus.$off('clearCircle');
+      bus.$off('saveCircle');
+      bus.$off('openCircle');
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
