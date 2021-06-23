@@ -59,28 +59,11 @@ export default {
       },
 
       clearMarkCard(state: IState, id) {
-         return state.marks.map(mark => {
-            if (mark.id === id) {
-               mark.name = "";
-               mark.description = "";
-               mark.lat = "";
-               mark.long = "";
-               mark.state = "closed";
-            }
-         });
+         state.marks = state.marks.filter(mark => mark.id !== id);
       },
 
       clearCircleCard(state, id) {
-         return state.circles.map(circle => {
-            if (circle.id === id) {
-               circle.name = "";
-               circle.address = "";
-               circle.lat = "";
-               circle.long = "";
-               circle.radius = null;
-               circle.state = 'closed';
-            }
-         });
+         state.circles = state.circles.filter(circle => circle.id !== id);
       },
 
       setStateMark(state, payload) {

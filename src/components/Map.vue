@@ -144,7 +144,7 @@
         });
 
         //circles logic
-        this.circles.forEach(circle => {
+        this.circles.forEach((circle, index) => {
           let circleOnMap = new ymaps.GeoObject({
             type: 'Feature',
             geometry: {
@@ -166,6 +166,10 @@
           this.circlesData.push({id: circle.id, circle: circleOnMap});
 
           this.map.geoObjects.add(circleOnMap);
+
+          const suggestView = new ymaps.SuggestView(`address-${index}`);
+
+          circleOnMap.editor.startEditing();
         });
 
         bus.$on('clearCircle', (id) => {
