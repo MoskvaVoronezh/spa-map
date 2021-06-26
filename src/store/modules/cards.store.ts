@@ -4,6 +4,7 @@ import IState = MapObjects.IState;
 import {sidebarResource} from '@/resources/sidebar-resource';
 import IMark = MapObjects.IMark;
 import ICircle = MapObjects.ICircle;
+import {bus} from "@/plugins/bus";
 
 export default {
    namespaced: true,
@@ -19,10 +20,12 @@ export default {
       },
 
       addCardMark(state: IState, mark: IMark) {
+         bus.$emit('updateMapComponent');
          return state.marks.push(mark);
       },
 
       addCardCircle(state: IState, circle: ICircle) {
+         bus.$emit('updateMapComponent');
          return state.circles.push(circle);
       },
 
