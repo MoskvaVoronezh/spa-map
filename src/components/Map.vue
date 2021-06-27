@@ -8,6 +8,7 @@
   import IMark = MapObjects.IMark;
   import ICircle = MapObjects.ICircle;
   import {bus} from "@/plugins/bus";
+  import {createLogger} from "vuex";
 
 	declare var ymaps: any;
 
@@ -89,6 +90,13 @@
             bus.$emit('updateCoordsCircle', {id: thisObject.properties._data.id, coords, address});
             bus.$emit('scrollToCircle', thisObject.properties._data.id);
           });
+        });
+
+        this.map.geoObjects.events.add('geometrychange', (e) => {
+          let id = e._sourceEvent.originalEvent.target.properties._data.id;
+          let radius = e._sourceEvent.originalEvent.target.geometry._radius;
+          this.$store.commit('cards/updateRadius', {id, radius});
+          bus.$emit('updateRadius', {id, radius});
         });
 
         bus.$on('openMark', (mark) => {

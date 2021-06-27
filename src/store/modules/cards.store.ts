@@ -94,6 +94,15 @@ export default {
             }
             return circle;
          });
+      },
+
+      updateRadius(state, payload) {
+         state.circles.forEach(item => {
+            if(item.id == payload.id) {
+               item.radius = payload.radius;
+            }
+         });
+         Vue.set(state, 'circles', state.circles);
       }
    },
    actions: {

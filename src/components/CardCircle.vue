@@ -74,6 +74,12 @@ export default class CardCircle extends Vue {
       }
     });
 
+    bus.$on('updateRadius', (data) => {
+      if (data.id === this.data.id) {
+        this.radius = data.radius;
+      }
+    });
+
     this.circles.forEach(item => {
       if(item.id === this.data.id) {
         this.lat = item.lat;
