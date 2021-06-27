@@ -251,7 +251,6 @@
               console.log(e);
             });
           }
-          //bus.$emit('updateMapComponent');
         });
 
         bus.$on('openCircle', (payload) => {
