@@ -116,6 +116,7 @@
 
     addCircle() {
       this.$store.dispatch('cards/addCardCircle');
+      bus.$emit('updateMapComponent');
     }
 
     destroyed() {
