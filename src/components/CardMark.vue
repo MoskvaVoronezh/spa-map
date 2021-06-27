@@ -63,7 +63,7 @@ export default class CardMark extends Vue {
     if (this.data.lat && this.data.long) {
       bus.$emit('openMark',{ id: this.data.id, lat: this.data.lat, long: this.data.long, name: this.markName ? this.markName : this.data.name, description: this.markDescription ? this.markDescription : this.data.description });
     }
-    this.$emit('openCardMark', this.data.id);
+    this.$emit('open', this.data.id);
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: this.data.id});
   }
 

@@ -10,7 +10,7 @@
                    </div>
                  </template>
                  <template v-show="marks.length > 0">
-                   <CardMark v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" :id="mark.id" :ref="`markCard-${mark.id}`" class="sidebar__list-item" />
+                   <CardMark v-for="(mark, index) of marks" :data="mark" :index="index" :key="mark.id" :id="mark.id" :ref="`markCard-${mark.id}`" class="sidebar__list-item" @open="openMarkCard" />
                  </template>
                </div>
             </div>
@@ -24,7 +24,7 @@
                     </div>
                   </template>
                   <template v-else>
-                    <CardCircle v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" :id="circle.id" :ref="`circleCard-${circle.id}`" class="sidebar__list-item"/>
+                    <CardCircle v-for="(circle, index) of circles" :data="circle" :index="index" :key="circle.id" :id="circle.id" :ref="`circleCard-${circle.id}`" class="sidebar__list-item" @open="openCircleCard"/>
                   </template>
                </div>
             </div>
@@ -61,24 +61,6 @@
 		}
 
 		mounted() {
-		  this.$on('openCardMark', (currentId) => {
-		    let id = this.$store.state.cards.activeElem ? this.$store.state.cards.activeElem : null;
-        if (id) {
-          if (this.$refs[`markCard-${id}`][0].markName === "" || this.$refs[`markCard-${id}`][0].markDescription === "" || this.$refs[`markCard-${id}`][0].data.lat === "" || this.$refs[`markCard-${id}`][0].data.long === "") {
-            this.$store.commit('cards/setStateMark', { id, state: 'error' });
-          }
-        }
-      });
-
-      this.$on('openCardCircle', (currentId) => {
-        let id = this.$store.state.cards.activeElem ? this.$store.state.cards.activeElem : null;
-        if (id) {
-          if (this.$refs[`circleCard-${id}`][0].data?.name === "" || this.$refs[`circleCard-${id}`][0].data.address === "" || this.$refs[`circleCard-${id}`][0].data.lat === "" || this.$refs[`circleCard-${id}`][0].data.long === "" || this.$refs[`circleCard-${id}`][0].data.radius === "") {
-            this.$store.commit('cards/setStateCircle', {id, state: 'error'});
-          }
-        }
-      });
-
       bus.$on('scrollToMark', (currentId) => {
         let elem = this.$refs[`markCard-${currentId}`][0].$el;
         setTimeout(() => {
@@ -92,6 +74,24 @@
           elem.scrollIntoView({block: 'nearest', behavior: 'smooth'});
         }, 300);
       });
+    }
+
+    openMarkCard(data) {
+      let id = this.$store.state.cards.activeElem ? this.$store.state.cards.activeElem : null;
+      if (id) {
+        if (this.$refs[`markCard-${id}`][0].markName === "" || this.$refs[`markCard-${id}`][0].markDescription === "" || this.$refs[`markCard-${id}`][0].data.lat === "" || this.$refs[`markCard-${id}`][0].data.long === "") {
+          this.$store.commit('cards/setStateMark', { id, state: 'error' });
+        }
+      }
+    }
+
+    openCircleCard(data) {
+      let id = this.$store.state.cards.activeElem ? this.$store.state.cards.activeElem : null;
+      if (id) {
+        if (this.$refs[`circleCard-${id}`][0].data?.name === "" || this.$refs[`circleCard-${id}`][0].data.address === "" || this.$refs[`circleCard-${id}`][0].data.lat === "" || this.$refs[`circleCard-${id}`][0].data.long === "" || this.$refs[`circleCard-${id}`][0].data.radius === "") {
+          this.$store.commit('cards/setStateCircle', {id, state: 'error'});
+        }
+      }
     }
 
 		get marks(): IMark[] {
