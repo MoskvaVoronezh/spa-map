@@ -80,6 +80,10 @@ export default class CardCircle extends Vue {
       }
     });
 
+    bus.$on('updateAddress', address => {
+      this.address = address;
+    });
+
     this.circles.forEach(item => {
       if(item.id === this.data.id) {
         this.lat = item.lat;
@@ -134,6 +138,12 @@ export default class CardCircle extends Vue {
     bus.$emit('clearCircle', this.data.id);
     this.$store.commit('cards/setPropertyInState', { name: 'activeElem', value: ""});
     this.$store.dispatch('cards/clearCircle', { id: this.data.id });
+  }
+
+  destroyed() {
+    bus.$off('updateCoordsCircle');
+    bus.$off('updateRadius');
+    bus.$off('updateAddress');
   }
 }
 </script>

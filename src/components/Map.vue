@@ -179,6 +179,11 @@
 
           const suggestView = new ymaps.SuggestView(`address-${index}`);
 
+          suggestView.events.add("select", function(e){
+            let address = e.get('item').value;
+            bus.$emit('updateAddress', address);
+          });
+
           circleOnMap.editor.startEditing();
         });
 
